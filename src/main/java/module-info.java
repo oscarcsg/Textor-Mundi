@@ -1,7 +1,6 @@
-module com.weaverstudios {
+module com.weaverstudios.main {
     requires javafx.controls;
-    requires javafx.fxml;
+    requires transitive javafx.graphics;
 
-    opens com.weaverstudios to javafx.fxml;
-    exports com.weaverstudios;
+    exports com.weaverstudios.main; // Permite que otros modulos usen sus clases públicas
 }
