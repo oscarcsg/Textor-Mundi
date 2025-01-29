@@ -44,49 +44,54 @@ public class MainView {
 
         
         // File menu
-        Menu menuFile = new Menu(LanguageManager.getText("menu.file"));
-        MenuItem create = new MenuItem();
-        MenuItem open = new MenuItem();
-        MenuItem save = new MenuItem();
-        MenuItem saveAs = new MenuItem();
-        MenuItem close = new MenuItem();
-        MenuItem exit = new MenuItem();
+        Menu menuFile = new Menu(LanguageManager.getText("file.menu"));
+        MenuItem create = new MenuItem(LanguageManager.getText("file.create"));
+        MenuItem open = new MenuItem(LanguageManager.getText("file.open"));
+        MenuItem save = new MenuItem(LanguageManager.getText("file.save"));
+        MenuItem saveAs = new MenuItem(LanguageManager.getText("file.saveAs"));
+        MenuItem close = new MenuItem(LanguageManager.getText("file.close"));
+        MenuItem exit = new MenuItem(LanguageManager.getText("file.exit"));
+
         menuFile.getItems().addAll(create, open, save, saveAs, close, exit);
 
 
         // Edit menu
-        Menu menuEdit = new Menu();
-        MenuItem copy = new MenuItem();
-        MenuItem cut = new MenuItem();
-        MenuItem paste = new MenuItem();
-        MenuItem selectAll = new MenuItem();
+        Menu menuEdit = new Menu(LanguageManager.getText("edit.menu"));
+        MenuItem copy = new MenuItem(LanguageManager.getText("edit.copy"));
+        MenuItem cut = new MenuItem(LanguageManager.getText("edit.cut"));
+        MenuItem paste = new MenuItem(LanguageManager.getText("edit.paste"));
+        MenuItem selectAll = new MenuItem(LanguageManager.getText("edit.selectAll"));
+
         menuEdit.getItems().addAll(copy, cut, paste, selectAll);
 
 
         // View menu
-        Menu menuView = new Menu();
-        MenuItem fullscreen = new MenuItem();
-        MenuItem zoomIn = new MenuItem();
-        MenuItem zoomOut = new MenuItem();
+        Menu menuView = new Menu(LanguageManager.getText("view.menu"));
+        MenuItem fullscreen = new MenuItem(LanguageManager.getText("view.fullscreen"));
+        MenuItem zoomIn = new MenuItem(LanguageManager.getText("view.zoomIn"));
+        MenuItem zoomOut = new MenuItem(LanguageManager.getText("view.zoomOut"));
+
         menuView.getItems().addAll(fullscreen, zoomIn, zoomOut);
 
 
         // Tools menu
-        Menu menuTools = new Menu();
-        MenuItem settings = new MenuItem();
+        Menu menuTools = new Menu(LanguageManager.getText("tools.menu"));
+        MenuItem settings = new MenuItem(LanguageManager.getText("tools.settings"));
+
         menuTools.getItems().addAll(settings);
 
 
         // Help menu
-        Menu menuHelp = new Menu();
-        MenuItem documentation = new MenuItem();
-        MenuItem KBshortcuts = new MenuItem();
-        MenuItem about = new MenuItem();
-        MenuItem reportBug = new MenuItem();
+        Menu menuHelp = new Menu(LanguageManager.getText("help.menu"));
+        MenuItem documentation = new MenuItem(LanguageManager.getText("help.documentation"));
+        MenuItem KBshortcuts = new MenuItem(LanguageManager.getText("help.KBshortcuts"));
+        MenuItem about = new MenuItem(LanguageManager.getText("help.about"));
+        MenuItem reportBug = new MenuItem(LanguageManager.getText("help.reportBug"));
+
         menuHelp.getItems().addAll(documentation, KBshortcuts, about, reportBug);
 
 
-        menuBar.getMenus().addAll(menuFile);
+        menuBar.getMenus().addAll(menuFile, menuEdit, menuView, menuTools, menuHelp);
         return menuBar;
     }
 }
