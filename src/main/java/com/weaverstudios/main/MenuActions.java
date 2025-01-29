@@ -1,5 +1,9 @@
 package com.weaverstudios.main;
 
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
+import javafx.scene.layout.VBox;
+
 public class MenuActions {
     // =======================
     //       File menu
@@ -18,9 +22,6 @@ public class MenuActions {
     }
     public static void closeAction() {
         
-    }
-    public static void exitAction() {
-
     }
 
 
@@ -58,8 +59,19 @@ public class MenuActions {
     // =======================
     //       Tools menu
     // =======================
-    public static void settingsAction() {
+    public static VBox settingsAction() {
+        VBox settingsPanel = new VBox(10);
 
+        MenuButton languages = new MenuButton(LanguageManager.getText("lang.menu"));
+        MenuItem spanish = new MenuItem(LanguageManager.getText("lang.es"));
+        MenuItem english = new MenuItem(LanguageManager.getText("lang.en"));
+
+        languages.getItems().addAll(spanish, english);
+
+        settingsPanel.getChildren().addAll(
+            languages
+        );
+        return settingsPanel;
     }
 
 
