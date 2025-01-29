@@ -44,7 +44,7 @@ public class MainView {
 
         
         // File menu
-        Menu menuFile = new Menu();
+        Menu menuFile = new Menu(LanguageManager.getText("menu.file"));
         MenuItem create = new MenuItem();
         MenuItem open = new MenuItem();
         MenuItem save = new MenuItem();

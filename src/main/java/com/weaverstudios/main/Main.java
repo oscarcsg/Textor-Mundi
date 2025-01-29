@@ -6,6 +6,9 @@ import javafx.stage.Stage;
 public class Main extends Application{
     @Override
     public void start(Stage primaryStage) {
+        // Initialize LanguageManager for automatic language configuration
+        LanguageManager.initialize();
+        
         MainView mainView = new MainView();
         mainView.show(primaryStage);
     }
