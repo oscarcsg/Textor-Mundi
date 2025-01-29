@@ -15,26 +15,26 @@ public class MainView {
     private StackPane root; // Main container (overlay)
 
     public void show(Stage primaryStage) {
-        // Crear la interfaz
+        // Interface creation
         BorderPane mainContent = new BorderPane();
 
-        // Obtener el tamaño de la pantalla
+        // Obtain screen size and resolution
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
         double screenWidth = screenBounds.getWidth();
         double screenHeight = screenBounds.getHeight();
 
-        // Crear la barra superior
+        // Create topBar, MenuBar
         mainContent.setTop(createMenuBar());
 
-        // Crear el StackPanel y agregar el contenido
+        // Create StackPanel and add its content
         root = new StackPane(mainContent);
 
-        // Crear la escena y mostrarla
+        // Create scene and show
         Scene scene = new Scene(root, screenWidth, screenHeight);
 
         primaryStage.setTitle("Textor Mundi");
         primaryStage.setScene(scene);
-        primaryStage.setMaximized(true); // Iniciar en ventana maximizada
+        primaryStage.setMaximized(true); // Initialize maximazed windows
         primaryStage.show();
     }
 
@@ -45,12 +45,48 @@ public class MainView {
         
         // File menu
         Menu menuFile = new Menu();
-
         MenuItem create = new MenuItem();
         MenuItem open = new MenuItem();
         MenuItem save = new MenuItem();
+        MenuItem saveAs = new MenuItem();
+        MenuItem close = new MenuItem();
         MenuItem exit = new MenuItem();
+        menuFile.getItems().addAll(create, open, save, saveAs, close, exit);
 
+
+        // Edit menu
+        Menu menuEdit = new Menu();
+        MenuItem copy = new MenuItem();
+        MenuItem cut = new MenuItem();
+        MenuItem paste = new MenuItem();
+        MenuItem selectAll = new MenuItem();
+        menuEdit.getItems().addAll(copy, cut, paste, selectAll);
+
+
+        // View menu
+        Menu menuView = new Menu();
+        MenuItem fullscreen = new MenuItem();
+        MenuItem zoomIn = new MenuItem();
+        MenuItem zoomOut = new MenuItem();
+        menuView.getItems().addAll(fullscreen, zoomIn, zoomOut);
+
+
+        // Tools menu
+        Menu menuTools = new Menu();
+        MenuItem settings = new MenuItem();
+        menuTools.getItems().addAll(settings);
+
+
+        // Help menu
+        Menu menuHelp = new Menu();
+        MenuItem documentation = new MenuItem();
+        MenuItem KBshortcuts = new MenuItem();
+        MenuItem about = new MenuItem();
+        MenuItem reportBug = new MenuItem();
+        menuHelp.getItems().addAll(documentation, KBshortcuts, about, reportBug);
+
+
+        menuBar.getMenus().addAll(menuFile);
         return menuBar;
     }
 }
