@@ -1,5 +1,7 @@
 package com.weaverstudios.main;
 
+import java.util.Locale;
+
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -19,7 +21,7 @@ public class MainView {
     private static StackPane root; // Main container (overlay)
     private static BorderPane mainContent; // Structure with menu and main view
     private static MenuBar menuBar;
-    private String locale;
+    private static Locale locale;
 
     // =====================================
     //         Main View creation
@@ -56,7 +58,7 @@ public class MainView {
         mainContent.setCenter(view);
     }
     // Asign the actual locale to 'locale' variable
-    public String setCurrentLocale() {
+    public Locale setCurrentLocale() {
         return LanguageManager.getCurrentLocale();
     }
 
@@ -162,7 +164,7 @@ public class MainView {
     public static void update() {
         // Update element's texts when necesary
         updateMenuItems(menuBar);
-        updateLabels(mainContent);
+        // updateLabels(mainContent);
         // If u've more elements with text, add another updateX() operation
     }
     
@@ -170,7 +172,8 @@ public class MainView {
         // Update texts of MenuItems (MenuBar)
         for (Menu menu : menuBar.getMenus()) {
             for (MenuItem menuItem : menu.getItems()) {
-                String key = menuItem.getText();  // We asume initial text is key (IT IS NOT, FIX)
+                String text = menuItem.getText();  // We set variable 'text' as the text content of the menuItem
+                String key = LanguageManager.getKey(text, locale);
                 menuItem.setText(LanguageManager.getText(key)); // Update text using key
             }
         }

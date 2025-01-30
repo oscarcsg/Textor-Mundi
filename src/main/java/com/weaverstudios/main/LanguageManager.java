@@ -6,19 +6,22 @@ import java.util.ResourceBundle;
 public class LanguageManager {
     private static final String systemLang = Locale.getDefault().getLanguage();
     private static ResourceBundle resourceBundle;
-    private static String language;
+    private static String languageString;
+    private static Locale language;
 
     // Método para inicializar el LanguageManager y cargar el idioma
     public static void initialize() {
         // Detectar el idioma del sistema
-        language = Locale.getDefault().getLanguage();
+        languageString = Locale.getDefault().getLanguage();
+        language = Locale.forLanguageTag(languageString);
 
         // Cargar el archivo de propiedades según el idioma
-        setLanguage(Locale.of(language));
+        setLanguage(Locale.of(languageString));
     }
 
     // Método para cambiar el idioma (puede ser llamado desde la interfaz de usuario)
     public static void setLanguage(Locale locale) {
+        language = locale;
         try {
             // Intentar cargar el archivo de propiedades para el idioma seleccionado
             resourceBundle = ResourceBundle.getBundle("com.weaverstudios.languages.messages", locale);
@@ -34,11 +37,26 @@ public class LanguageManager {
         return resourceBundle.getString(key);
     }
 
-    public static String getCurrentLocale() {
+    // Method to obtain the keys of texts (for update language)
+    public static String getKey(String text, Locale locale) {
+        // Charge properties file by locale
+        ResourceBundle bundle = ResourceBundle.getBundle("com.weaverstudios.languages.messages", locale);
+
+        // Iterates over keys from ResourceBundle and search equal value to text
+        for (String key : bundle.keySet()) {
+            if (bundle.getString(key).equals(text)) {
+                return key;
+            }
+        }
+        return null;
+    }
+
+    public static Locale getCurrentLocale() {
         return language;
     }
 
     public static String getSystemLang() {
+
         return systemLang;
     }
 }
