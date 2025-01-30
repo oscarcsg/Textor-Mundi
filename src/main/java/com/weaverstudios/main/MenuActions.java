@@ -61,6 +61,8 @@ public class MenuActions {
     // =======================
     public static VBox settingsAction() {
         VBox settingsPanel = new VBox(10);
+        settingsPanel.setMaxWidth(200);
+        settingsPanel.setMaxHeight(100);
 
         MenuButton languages = new MenuButton(LanguageManager.getText("lang.menu"));
         MenuItem spanish = new MenuItem(LanguageManager.getText("lang.es"));

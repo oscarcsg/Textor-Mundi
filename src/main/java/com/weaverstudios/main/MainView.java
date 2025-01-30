@@ -1,6 +1,7 @@
 package com.weaverstudios.main;
 
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -13,10 +14,11 @@ import javafx.stage.Stage;
 public class MainView {
 
     private StackPane root; // Main container (overlay)
+    private BorderPane mainContent; // Structure with menu and main view
 
     public void show(Stage primaryStage) {
         // Interface creation
-        BorderPane mainContent = new BorderPane();
+        mainContent = new BorderPane();
 
         // Obtain screen size and resolution
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
@@ -36,6 +38,11 @@ public class MainView {
         primaryStage.setScene(scene);
         primaryStage.setMaximized(true); // Initialize maximazed windows
         primaryStage.show();
+    }
+
+    // Method to change the content of the StackPane
+    public void setView(Node view) {
+        mainContent.setCenter(view);
     }
 
     // MenuBar (File, View, Settings, etc)
@@ -102,7 +109,7 @@ public class MainView {
         Menu menuTools = new Menu(LanguageManager.getText("tools.menu"));
         MenuItem settings = new MenuItem(LanguageManager.getText("tools.settings"));
 
-        settings.setOnAction(e -> MenuActions.settingsAction());
+        settings.setOnAction(e -> setView(MenuActions.settingsAction()));
 
         menuTools.getItems().addAll(settings);
 
