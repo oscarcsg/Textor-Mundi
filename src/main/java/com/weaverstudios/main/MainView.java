@@ -2,7 +2,10 @@ package com.weaverstudios.main;
 
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -13,8 +16,9 @@ import javafx.stage.Stage;
 
 public class MainView {
 
-    private StackPane root; // Main container (overlay)
-    private BorderPane mainContent; // Structure with menu and main view
+    private static StackPane root; // Main container (overlay)
+    private static BorderPane mainContent; // Structure with menu and main view
+    private static MenuBar menuBar;
 
     public void show(Stage primaryStage) {
         // Interface creation
@@ -47,7 +51,7 @@ public class MainView {
 
     // MenuBar (File, View, Settings, etc)
     private MenuBar createMenuBar() {
-        MenuBar menuBar = new MenuBar();
+        menuBar = new MenuBar();
 
         // =======================
         //       File menu
@@ -134,4 +138,52 @@ public class MainView {
         menuBar.getMenus().addAll(menuFile, menuEdit, menuView, menuTools, menuHelp);
         return menuBar;
     }
+
+
+
+
+
+
+
+
+
+    
+    public static void update() {
+        // Actualizar solo los textos de los elementos necesarios
+        updateMenuItems(menuBar);
+        updateLabels(mainContent);
+        // Si tienes más elementos con texto en tu vista, puedes agregarlo aquí, por ejemplo:
+        // updateLabels(mainContent);
+    }
+    
+    private static void updateMenuItems(MenuBar menuBar) {
+        // Actualizar los textos de los MenuItems
+        for (Menu menu : menuBar.getMenus()) {
+            for (MenuItem menuItem : menu.getItems()) {
+                String key = menuItem.getText();  // Asumimos que el texto inicial es la clave
+                menuItem.setText(LanguageManager.getText(key));  // Actualizamos el texto usando la clave
+            }
+        }
+    }
+    
+    
+    // Si tienes otros elementos como Labels o Botones, puedes añadir un método como este:
+    private static void updateLabels(Parent parent) {
+        for (Node node : parent.getChildrenUnmodifiable()) {
+            if (node instanceof Labeled) {
+                Labeled labeledNode = (Labeled) node;
+                String key = labeledNode.getText();
+                labeledNode.setText(LanguageManager.getText(key));  // Actualizamos el texto
+            } else if (node instanceof Button) {
+                Button buttonNode = (Button) node;
+                String key = buttonNode.getText();
+                buttonNode.setText(LanguageManager.getText(key));  // Actualizamos el texto para botones
+            } else if (node instanceof Parent) {
+                // Si el nodo es otro contenedor, llamamos recursivamente a sus hijos
+                updateLabels((Parent) node);
+            }
+        }
+    }
+
+    
 }

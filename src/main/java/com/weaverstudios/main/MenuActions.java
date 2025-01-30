@@ -1,5 +1,7 @@
 package com.weaverstudios.main;
 
+import java.util.Locale;
+
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.VBox;
@@ -67,6 +69,12 @@ public class MenuActions {
         MenuButton languages = new MenuButton(LanguageManager.getText("lang.menu"));
         MenuItem spanish = new MenuItem(LanguageManager.getText("lang.es"));
         MenuItem english = new MenuItem(LanguageManager.getText("lang.en"));
+
+        spanish.setOnAction(e -> LanguageManager.setLanguage(Locale.of("es")));
+        english.setOnAction(e -> {
+            LanguageManager.setLanguage(Locale.of("en"));
+            MainView.update();
+        });
 
         languages.getItems().addAll(spanish, english);
 

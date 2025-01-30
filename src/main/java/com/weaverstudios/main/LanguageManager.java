@@ -5,27 +5,21 @@ import java.util.ResourceBundle;
 
 public class LanguageManager {
     private static ResourceBundle resourceBundle;
-    private static Locale currentLocale;
 
     // Método para inicializar el LanguageManager y cargar el idioma
     public static void initialize() {
         // Detectar el idioma del sistema
         String language = Locale.getDefault().getLanguage();
 
-        // Usar el idioma y el país del sistema, si están disponibles
-        currentLocale = Locale.of(language);
-        
         // Cargar el archivo de propiedades según el idioma
-        setLanguage(currentLocale);
+        setLanguage(Locale.of(language));
     }
 
     // Método para cambiar el idioma (puede ser llamado desde la interfaz de usuario)
     public static void setLanguage(Locale locale) {
-        currentLocale = locale;
-
         try {
             // Intentar cargar el archivo de propiedades para el idioma seleccionado
-            resourceBundle = ResourceBundle.getBundle("com.weaverstudios.languages.messages", currentLocale);
+            resourceBundle = ResourceBundle.getBundle("com.weaverstudios.languages.messages", locale);
         } catch (Exception e) {
             e.printStackTrace();
             // Si ocurre un error, cargar el archivo por defecto (inglés)
