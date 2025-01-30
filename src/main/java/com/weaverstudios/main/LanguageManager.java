@@ -4,12 +4,14 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class LanguageManager {
+    private static final String systemLang = Locale.getDefault().getLanguage();
     private static ResourceBundle resourceBundle;
+    private static String language;
 
     // Método para inicializar el LanguageManager y cargar el idioma
     public static void initialize() {
         // Detectar el idioma del sistema
-        String language = Locale.getDefault().getLanguage();
+        language = Locale.getDefault().getLanguage();
 
         // Cargar el archivo de propiedades según el idioma
         setLanguage(Locale.of(language));
@@ -30,5 +32,13 @@ public class LanguageManager {
     // Método para obtener los textos (para ser usados en la interfaz de usuario)
     public static String getText(String key) {
         return resourceBundle.getString(key);
+    }
+
+    public static String getCurrentLocale() {
+        return language;
+    }
+
+    public static String getSystemLang() {
+        return systemLang;
     }
 }

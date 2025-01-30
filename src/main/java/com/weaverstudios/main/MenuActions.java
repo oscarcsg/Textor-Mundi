@@ -67,16 +67,24 @@ public class MenuActions {
         settingsPanel.setMaxHeight(100);
 
         MenuButton languages = new MenuButton(LanguageManager.getText("lang.menu"));
+        MenuItem systemLang = new MenuItem(LanguageManager.getText("lang.systemLang"));
         MenuItem spanish = new MenuItem(LanguageManager.getText("lang.es"));
         MenuItem english = new MenuItem(LanguageManager.getText("lang.en"));
 
-        spanish.setOnAction(e -> LanguageManager.setLanguage(Locale.of("es")));
+        systemLang.setOnAction(e -> {
+            LanguageManager.setLanguage(Locale.of(LanguageManager.getSystemLang()));
+            MainView.update();
+        });
+        spanish.setOnAction(e -> {
+            LanguageManager.setLanguage(Locale.of("es"));
+            MainView.update();
+        });
         english.setOnAction(e -> {
             LanguageManager.setLanguage(Locale.of("en"));
             MainView.update();
         });
 
-        languages.getItems().addAll(spanish, english);
+        languages.getItems().addAll(systemLang, spanish, english);
 
         settingsPanel.getChildren().addAll(
             languages

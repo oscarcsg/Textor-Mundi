@@ -19,8 +19,15 @@ public class MainView {
     private static StackPane root; // Main container (overlay)
     private static BorderPane mainContent; // Structure with menu and main view
     private static MenuBar menuBar;
+    private String locale;
 
+    // =====================================
+    //         Main View creation
+    // =====================================
     public void show(Stage primaryStage) {
+        // Update locale variable for later usage
+        locale = setCurrentLocale();
+
         // Interface creation
         mainContent = new BorderPane();
 
@@ -48,8 +55,16 @@ public class MainView {
     public void setView(Node view) {
         mainContent.setCenter(view);
     }
+    // Asign the actual locale to 'locale' variable
+    public String setCurrentLocale() {
+        return LanguageManager.getCurrentLocale();
+    }
 
-    // MenuBar (File, View, Settings, etc)
+
+
+    // =======================================
+    //   MenuBar (File, View, Settings, etc)
+    // =======================================
     private MenuBar createMenuBar() {
         menuBar = new MenuBar();
 
@@ -141,45 +156,39 @@ public class MainView {
 
 
 
-
-
-
-
-
-
-    
+    // =========================================
+    //      Operations to update language
+    // =========================================
     public static void update() {
-        // Actualizar solo los textos de los elementos necesarios
+        // Update element's texts when necesary
         updateMenuItems(menuBar);
         updateLabels(mainContent);
-        // Si tienes más elementos con texto en tu vista, puedes agregarlo aquí, por ejemplo:
-        // updateLabels(mainContent);
+        // If u've more elements with text, add another updateX() operation
     }
     
     private static void updateMenuItems(MenuBar menuBar) {
-        // Actualizar los textos de los MenuItems
+        // Update texts of MenuItems (MenuBar)
         for (Menu menu : menuBar.getMenus()) {
             for (MenuItem menuItem : menu.getItems()) {
-                String key = menuItem.getText();  // Asumimos que el texto inicial es la clave
-                menuItem.setText(LanguageManager.getText(key));  // Actualizamos el texto usando la clave
+                String key = menuItem.getText();  // We asume initial text is key (IT IS NOT, FIX)
+                menuItem.setText(LanguageManager.getText(key)); // Update text using key
             }
         }
     }
     
-    
-    // Si tienes otros elementos como Labels o Botones, puedes añadir un método como este:
     private static void updateLabels(Parent parent) {
+        // Update labels and button's texts
         for (Node node : parent.getChildrenUnmodifiable()) {
             if (node instanceof Labeled) {
                 Labeled labeledNode = (Labeled) node;
                 String key = labeledNode.getText();
-                labeledNode.setText(LanguageManager.getText(key));  // Actualizamos el texto
+                labeledNode.setText(LanguageManager.getText(key));  // Update text
             } else if (node instanceof Button) {
                 Button buttonNode = (Button) node;
                 String key = buttonNode.getText();
-                buttonNode.setText(LanguageManager.getText(key));  // Actualizamos el texto para botones
+                buttonNode.setText(LanguageManager.getText(key));  // Update buttons text
             } else if (node instanceof Parent) {
-                // Si el nodo es otro contenedor, llamamos recursivamente a sus hijos
+                // If node is another container, also calls its sons (recursively)
                 updateLabels((Parent) node);
             }
         }
