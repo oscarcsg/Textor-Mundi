@@ -73,15 +73,20 @@ public class MenuActions {
 
         systemLang.setOnAction(e -> {
             LanguageManager.setLanguage(Locale.of(LanguageManager.getSystemLang()));
+            MainView.setLocale(Locale.of(LanguageManager.getSystemLang()));
             MainView.update();
         });
         spanish.setOnAction(e -> {
             LanguageManager.setLanguage(Locale.of("es"));
             MainView.update();
+            MainView.setLocale(Locale.of("es"));
+            System.out.println(MainView.getLocale());
         });
         english.setOnAction(e -> {
             LanguageManager.setLanguage(Locale.of("en"));
             MainView.update();
+            MainView.setLocale(Locale.of("en"));
+            System.out.println(MainView.getLocale());
         });
 
         languages.getItems().addAll(systemLang, spanish, english);

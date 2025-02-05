@@ -6,7 +6,6 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -161,41 +160,59 @@ public class MainView {
     // =========================================
     //      Operations to update language
     // =========================================
+    public static void setLocale(Locale newLocale){
+        locale = newLocale;
+    }
+    public static Locale getLocale(){
+        return locale;
+    }
+
     public static void update() {
         // Update element's texts when necesary
-        updateMenuItems(menuBar);
-        // updateLabels(mainContent);
+        //updateMenuItems(menuBar);
+        updateLanguage(mainContent);
         // If u've more elements with text, add another updateX() operation
     }
     
     private static void updateMenuItems(MenuBar menuBar) {
         // Update texts of MenuItems (MenuBar)
         for (Menu menu : menuBar.getMenus()) {
+            String text = menu.getText();  // We set variable 'text' as the text content of the menuItem
+            String key = LanguageManager.getKey(text, getLocale());
+            menu.setText(LanguageManager.getText(key));
             for (MenuItem menuItem : menu.getItems()) {
-                String text = menuItem.getText();  // We set variable 'text' as the text content of the menuItem
-                String key = LanguageManager.getKey(text, locale);
+                text = menuItem.getText();  // We set variable 'text' as the text content of the menuItem
+                key = LanguageManager.getKey(text, getLocale());
                 menuItem.setText(LanguageManager.getText(key)); // Update text using key
             }
         }
     }
-    
-    private static void updateLabels(Parent parent) {
-        // Update labels and button's texts
-        for (Node node : parent.getChildrenUnmodifiable()) {
-            if (node instanceof Labeled) {
-                Labeled labeledNode = (Labeled) node;
-                String key = labeledNode.getText();
-                labeledNode.setText(LanguageManager.getText(key));  // Update text
-            } else if (node instanceof Button) {
-                Button buttonNode = (Button) node;
-                String key = buttonNode.getText();
-                buttonNode.setText(LanguageManager.getText(key));  // Update buttons text
-            } else if (node instanceof Parent) {
-                // If node is another container, also calls its sons (recursively)
-                updateLabels((Parent) node);
+
+    private static void updateLanguage(Node node) {
+        if (node == null) return;
+
+        // Si el nodo tiene texto (es Labeled: Label, Button, CheckBox, etc.)
+        if (node instanceof Labeled labeledNode) {
+            updateLabeled(labeledNode);
+        }
+        
+        // Si el nodo es un MenuBar, actualizar menús y elementos de menú
+        else if (node instanceof MenuBar menuBar) {
+            updateMenuItems(menuBar);
+        }
+
+        // Si el nodo es un contenedor (VBox, HBox, GridPane, Pane, etc.), recorrer sus hijos
+        else if (node instanceof Parent parentNode) {
+            for (Node child : parentNode.getChildrenUnmodifiable()) {
+                updateLanguage(child);
             }
         }
     }
 
-    
+    private static void updateLabeled(Labeled labeledNode) {
+        String key = LanguageManager.getKey(labeledNode.getText(), getLocale());
+        if (key != null) {
+            labeledNode.setText(LanguageManager.getText(key));
+        }
+    }
 }
