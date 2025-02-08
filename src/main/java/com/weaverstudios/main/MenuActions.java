@@ -1,7 +1,9 @@
+//com/weaverstudios/main/MenuActions.java
 package com.weaverstudios.main;
 
 import java.util.Locale;
 
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.VBox;
@@ -66,32 +68,32 @@ public class MenuActions {
         settingsPanel.setMaxWidth(200);
         settingsPanel.setMaxHeight(100);
 
+        // ===== LANGUAGES ===== //
         MenuButton languages = new MenuButton(LanguageManager.getText("lang.menu"));
         MenuItem systemLang = new MenuItem(LanguageManager.getText("lang.systemLang"));
         MenuItem spanish = new MenuItem(LanguageManager.getText("lang.es"));
         MenuItem english = new MenuItem(LanguageManager.getText("lang.en"));
-
         systemLang.setOnAction(e -> {
             LanguageManager.setLanguage(Locale.of(LanguageManager.getSystemLang()));
-            MainView.setLocale(Locale.of(LanguageManager.getSystemLang()));
             MainView.update();
+            MainView.setLocale(Locale.of(LanguageManager.getSystemLang()));
         });
         spanish.setOnAction(e -> {
             LanguageManager.setLanguage(Locale.of("es"));
             MainView.update();
             MainView.setLocale(Locale.of("es"));
-            System.out.println(MainView.getLocale());
         });
         english.setOnAction(e -> {
             LanguageManager.setLanguage(Locale.of("en"));
             MainView.update();
             MainView.setLocale(Locale.of("en"));
-            System.out.println(MainView.getLocale());
         });
-
         languages.getItems().addAll(systemLang, spanish, english);
 
+        // =====
+
         settingsPanel.getChildren().addAll(
+            new Label(""),
             languages
         );
         return settingsPanel;

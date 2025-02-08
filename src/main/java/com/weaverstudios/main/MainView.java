@@ -1,3 +1,4 @@
+//com/weaverstudios/main/MainView.java
 package com.weaverstudios.main;
 
 import java.util.Locale;
@@ -9,9 +10,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -90,7 +93,6 @@ public class MainView {
 
         menuFile.getItems().addAll(create, open, save, saveAs, close, exit);
 
-
         // =======================
         //       Edit menu
         // =======================
@@ -107,7 +109,6 @@ public class MainView {
 
         menuEdit.getItems().addAll(copy, cut, paste, selectAll);
 
-
         // =======================
         //       View menu
         // =======================
@@ -122,17 +123,18 @@ public class MainView {
 
         menuView.getItems().addAll(fullscreen, zoomIn, zoomOut);
 
-
         // =======================
         //       Tools menu
         // =======================
         Menu menuTools = new Menu(LanguageManager.getText("tools.menu"));
         MenuItem settings = new MenuItem(LanguageManager.getText("tools.settings"));
 
-        settings.setOnAction(e -> setView(MenuActions.settingsAction()));
+        settings.setOnAction(e -> {
+            VBox settingsPanel = MenuActions.settingsAction();
+            setView(settingsPanel);
+        });
 
         menuTools.getItems().addAll(settings);
-
 
         // =======================
         //       Help menu
@@ -169,40 +171,21 @@ public class MainView {
 
     public static void update() {
         // Update element's texts when necesary
-        //updateMenuItems(menuBar);
         updateLanguage(mainContent);
         // If u've more elements with text, add another updateX() operation
-    }
-    
-    private static void updateMenuItems(MenuBar menuBar) {
-        // Update texts of MenuItems (MenuBar)
-        for (Menu menu : menuBar.getMenus()) {
-            String text = menu.getText();  // We set variable 'text' as the text content of the menuItem
-            String key = LanguageManager.getKey(text, getLocale());
-            menu.setText(LanguageManager.getText(key));
-            for (MenuItem menuItem : menu.getItems()) {
-                text = menuItem.getText();  // We set variable 'text' as the text content of the menuItem
-                key = LanguageManager.getKey(text, getLocale());
-                menuItem.setText(LanguageManager.getText(key)); // Update text using key
-            }
-        }
     }
 
     private static void updateLanguage(Node node) {
         if (node == null) return;
 
-        // Si el nodo tiene texto (es Labeled: Label, Button, CheckBox, etc.)
-        if (node instanceof Labeled labeledNode) {
-            updateLabeled(labeledNode);
-        }
-        
-        // Si el nodo es un MenuBar, actualizar menús y elementos de menú
-        else if (node instanceof MenuBar menuBar) {
-            updateMenuItems(menuBar);
-        }
-
-        // Si el nodo es un contenedor (VBox, HBox, GridPane, Pane, etc.), recorrer sus hijos
-        else if (node instanceof Parent parentNode) {
+        // If node is a text (Label, Button, CheckBox, etc.)
+        if (node instanceof Labeled labeledNode) updateLabeled(labeledNode);
+        // If node is a MenuBar
+        if (node instanceof MenuBar menuBar) updateMenuBarItems(menuBar);
+        // If node is a MenuButton
+        if (node instanceof MenuButton menuButton) updateMenuButtonItems(menuButton);
+        // If node is a container (VBox, HBox, GridPane, Pane, etc.), recoursive call updateLanguage() to update its sons
+        if (node instanceof Parent parentNode) {
             for (Node child : parentNode.getChildrenUnmodifiable()) {
                 updateLanguage(child);
             }
@@ -213,6 +196,42 @@ public class MainView {
         String key = LanguageManager.getKey(labeledNode.getText(), getLocale());
         if (key != null) {
             labeledNode.setText(LanguageManager.getText(key));
+        }
+    }
+        
+    private static void updateMenuBarItems(MenuBar menuBar) {
+        // Update text of the MenuBar
+        for (Menu menu : menuBar.getMenus()) {
+            String text = menu.getText();  // We set variable 'text' as the text content of the Menu
+            String key = LanguageManager.getKey(text, getLocale()); // Obtain the key of that text
+            if (key != null) {
+                menu.setText(LanguageManager.getText(key)); // Update Menu text using key if exists
+            }
+            // Update texts of MenuItems (MenuBar)
+            for (MenuItem menuItem : menu.getItems()) {
+                text = menuItem.getText();  // We set variable 'text' as the text content of the MenuItem
+                key = LanguageManager.getKey(text, getLocale()); // Obtain the key of that text
+                if (key != null) {
+                    menuItem.setText(LanguageManager.getText(key)); // Update MenuItem text using key if key exists
+                }
+            }
+        }
+    }
+
+    private static void updateMenuButtonItems(MenuButton menuButton) {
+        // Update text of the MenuButton
+        String text = menuButton.getText(); // We set variable 'text' as the text content of the MenuButton
+        String key = LanguageManager.getKey(text, getLocale()); // Obtain the key of that text
+        if (key != null) {
+            menuButton.setText(LanguageManager.getText(key)); // Update MenuButton text using key if exists
+        }
+        // Update texts of MenuItems (MenuButton)
+        for (MenuItem menuItem : menuButton.getItems()) {
+            text = menuItem.getText(); // We set variable 'text' as the text content of the MenuItem
+            key = LanguageManager.getKey(text, getLocale()); // Obtain the key of that text
+            if (key != null) {
+                menuItem.setText(LanguageManager.getText(key)); // Update MenuItem text using key if key exists
+            }
         }
     }
 }
