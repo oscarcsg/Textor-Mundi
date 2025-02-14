@@ -5,12 +5,9 @@ import java.util.Locale;
 
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Labeled;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
@@ -19,9 +16,9 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class MainView {
-
     private static StackPane root; // Main container (overlay)
     private static BorderPane mainContent; // Structure with menu and main view
+    private static Scene scene;
     private static MenuBar menuBar;
     private static Locale locale;
 
@@ -47,7 +44,13 @@ public class MainView {
         root = new StackPane(mainContent);
 
         // Create scene and show
-        Scene scene = new Scene(root, screenWidth, screenHeight);
+        scene = new Scene(root, screenWidth, screenHeight);
+        // First charge the global styles sheet
+        scene.getStylesheets().add(getClass().getResource("/com/weaverstudios/css/global.css").toExternalForm());
+        // Charge theme styles sheet
+        scene.getStylesheets().add(getClass().getResource("/com/weaverstudios/css/lightMode.css").toExternalForm());
+        // Then charge the specific MainView styles sheet
+        scene.getStylesheets().add(getClass().getResource("/com/weaverstudios/css/MainView.css").toExternalForm());
 
         primaryStage.setTitle("Textor Mundi");
         primaryStage.setScene(scene);
@@ -59,9 +62,18 @@ public class MainView {
     public void setView(Node view) {
         mainContent.setCenter(view);
     }
+    // Get the mainContent to update languages
+    public static BorderPane getMainContent() {
+        return mainContent;
+    }
     // Asign the actual locale to 'locale' variable
     public Locale setCurrentLocale() {
         return LanguageManager.getCurrentLocale();
+    }
+    //
+    public static Scene getScene() {
+        Scene currentScene = scene;
+        return currentScene;
     }
 
 
@@ -69,6 +81,7 @@ public class MainView {
     // =======================================
     //   MenuBar (File, View, Settings, etc)
     // =======================================
+    private MenuActions insMenAct = MenuActions.getInstance();
     private MenuBar createMenuBar() {
         menuBar = new MenuBar();
 
@@ -130,7 +143,7 @@ public class MainView {
         MenuItem settings = new MenuItem(LanguageManager.getText("tools.settings"));
 
         settings.setOnAction(e -> {
-            VBox settingsPanel = MenuActions.settingsAction();
+            VBox settingsPanel = insMenAct.settingsAction();
             setView(settingsPanel);
         });
 
@@ -167,71 +180,5 @@ public class MainView {
     }
     public static Locale getLocale(){
         return locale;
-    }
-
-    public static void update() {
-        // Update element's texts when necesary
-        updateLanguage(mainContent);
-        // If u've more elements with text, add another updateX() operation
-    }
-
-    private static void updateLanguage(Node node) {
-        if (node == null) return;
-
-        // If node is a text (Label, Button, CheckBox, etc.)
-        if (node instanceof Labeled labeledNode) updateLabeled(labeledNode);
-        // If node is a MenuBar
-        if (node instanceof MenuBar menuBar) updateMenuBarItems(menuBar);
-        // If node is a MenuButton
-        if (node instanceof MenuButton menuButton) updateMenuButtonItems(menuButton);
-        // If node is a container (VBox, HBox, GridPane, Pane, etc.), recoursive call updateLanguage() to update its sons
-        if (node instanceof Parent parentNode) {
-            for (Node child : parentNode.getChildrenUnmodifiable()) {
-                updateLanguage(child);
-            }
-        }
-    }
-
-    private static void updateLabeled(Labeled labeledNode) {
-        String key = LanguageManager.getKey(labeledNode.getText(), getLocale());
-        if (key != null) {
-            labeledNode.setText(LanguageManager.getText(key));
-        }
-    }
-        
-    private static void updateMenuBarItems(MenuBar menuBar) {
-        // Update text of the MenuBar
-        for (Menu menu : menuBar.getMenus()) {
-            String text = menu.getText();  // We set variable 'text' as the text content of the Menu
-            String key = LanguageManager.getKey(text, getLocale()); // Obtain the key of that text
-            if (key != null) {
-                menu.setText(LanguageManager.getText(key)); // Update Menu text using key if exists
-            }
-            // Update texts of MenuItems (MenuBar)
-            for (MenuItem menuItem : menu.getItems()) {
-                text = menuItem.getText();  // We set variable 'text' as the text content of the MenuItem
-                key = LanguageManager.getKey(text, getLocale()); // Obtain the key of that text
-                if (key != null) {
-                    menuItem.setText(LanguageManager.getText(key)); // Update MenuItem text using key if key exists
-                }
-            }
-        }
-    }
-
-    private static void updateMenuButtonItems(MenuButton menuButton) {
-        // Update text of the MenuButton
-        String text = menuButton.getText(); // We set variable 'text' as the text content of the MenuButton
-        String key = LanguageManager.getKey(text, getLocale()); // Obtain the key of that text
-        if (key != null) {
-            menuButton.setText(LanguageManager.getText(key)); // Update MenuButton text using key if exists
-        }
-        // Update texts of MenuItems (MenuButton)
-        for (MenuItem menuItem : menuButton.getItems()) {
-            text = menuItem.getText(); // We set variable 'text' as the text content of the MenuItem
-            key = LanguageManager.getKey(text, getLocale()); // Obtain the key of that text
-            if (key != null) {
-                menuItem.setText(LanguageManager.getText(key)); // Update MenuItem text using key if key exists
-            }
-        }
     }
 }
