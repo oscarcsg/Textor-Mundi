@@ -1,7 +1,9 @@
-//com/weaverstudios/main/MainView.java
+// com/weaverstudios/main/MainView.java
 package com.weaverstudios.main;
 
 import java.util.Locale;
+
+import com.weaverstudios.utils.GlobalUtils;
 
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
@@ -26,6 +28,10 @@ public class MainView {
     //         Main View creation
     // =====================================
     public void show(Stage primaryStage) {
+        // Charge loaded language
+        String savedLanguage = PreferencesManager.getLanguage(); // Get loaded language
+        LanguageManager.setLanguage(Locale.of(savedLanguage)); // Configure language
+
         // Update locale variable for later usage
         locale = setCurrentLocale();
 
@@ -48,7 +54,7 @@ public class MainView {
         // First charge the global styles sheet
         scene.getStylesheets().add(getClass().getResource("/com/weaverstudios/css/global.css").toExternalForm());
         // Charge theme styles sheet
-        scene.getStylesheets().add(getClass().getResource("/com/weaverstudios/css/lightMode.css").toExternalForm());
+        UIManager.getInstance().updateStyles(scene, PreferencesManager.getTheme());
         // Then charge the specific MainView styles sheet
         scene.getStylesheets().add(getClass().getResource("/com/weaverstudios/css/MainView.css").toExternalForm());
 
@@ -84,17 +90,18 @@ public class MainView {
     private MenuActions insMenAct = MenuActions.getInstance();
     private MenuBar createMenuBar() {
         menuBar = new MenuBar();
+        menuBar.setId("menuBar"); // ID for css styling
 
         // =======================
         //       File menu
         // =======================
-        Menu menuFile = new Menu(LanguageManager.getText("file.menu"));
-        MenuItem create = new MenuItem(LanguageManager.getText("file.create"));
-        MenuItem open = new MenuItem(LanguageManager.getText("file.open"));
-        MenuItem save = new MenuItem(LanguageManager.getText("file.save"));
-        MenuItem saveAs = new MenuItem(LanguageManager.getText("file.saveAs"));
-        MenuItem close = new MenuItem(LanguageManager.getText("file.close"));
-        MenuItem exit = new MenuItem(LanguageManager.getText("file.exit"));
+        Menu menuFile = GlobalUtils.menu("file.menu");
+        MenuItem create = GlobalUtils.menuItem("file.create");
+        MenuItem open = GlobalUtils.menuItem("file.open");
+        MenuItem save = GlobalUtils.menuItem("file.save");
+        MenuItem saveAs = GlobalUtils.menuItem("file.saveAs");
+        MenuItem close = GlobalUtils.menuItem("file.close");
+        MenuItem exit = GlobalUtils.menuItem("file.exit");
 
         // Asign actions to every MenuItem
         create.setOnAction(e -> MenuActions.createAction());
@@ -109,11 +116,11 @@ public class MainView {
         // =======================
         //       Edit menu
         // =======================
-        Menu menuEdit = new Menu(LanguageManager.getText("edit.menu"));
-        MenuItem copy = new MenuItem(LanguageManager.getText("edit.copy"));
-        MenuItem cut = new MenuItem(LanguageManager.getText("edit.cut"));
-        MenuItem paste = new MenuItem(LanguageManager.getText("edit.paste"));
-        MenuItem selectAll = new MenuItem(LanguageManager.getText("edit.selectAll"));
+        Menu menuEdit = GlobalUtils.menu("edit.menu");
+        MenuItem copy = GlobalUtils.menuItem("edit.copy");
+        MenuItem cut = GlobalUtils.menuItem("edit.cut");
+        MenuItem paste = GlobalUtils.menuItem("edit.paste");
+        MenuItem selectAll = GlobalUtils.menuItem("edit.selectAll");
 
         copy.setOnAction(e -> MenuActions.copyAction());
         cut.setOnAction(e -> MenuActions.cutAction());
@@ -125,10 +132,10 @@ public class MainView {
         // =======================
         //       View menu
         // =======================
-        Menu menuView = new Menu(LanguageManager.getText("view.menu"));
-        MenuItem fullscreen = new MenuItem(LanguageManager.getText("view.fullscreen"));
-        MenuItem zoomIn = new MenuItem(LanguageManager.getText("view.zoomIn"));
-        MenuItem zoomOut = new MenuItem(LanguageManager.getText("view.zoomOut"));
+        Menu menuView = GlobalUtils.menu("view.menu");
+        MenuItem fullscreen = GlobalUtils.menuItem("view.fullscreen");
+        MenuItem zoomIn = GlobalUtils.menuItem("view.zoomIn");
+        MenuItem zoomOut = GlobalUtils.menuItem("view.zoomOut");
 
         fullscreen.setOnAction(e -> MenuActions.fullscreenAction());
         zoomIn.setOnAction(e -> MenuActions.zoomInAction());
@@ -139,11 +146,12 @@ public class MainView {
         // =======================
         //       Tools menu
         // =======================
-        Menu menuTools = new Menu(LanguageManager.getText("tools.menu"));
-        MenuItem settings = new MenuItem(LanguageManager.getText("tools.settings"));
+        Menu menuTools = GlobalUtils.menu("tools.menu");
+        MenuItem settings = GlobalUtils.menuItem("tools.settings");
 
         settings.setOnAction(e -> {
             VBox settingsPanel = insMenAct.settingsAction();
+            UIManager.getInstance().updateStyles(settingsPanel, PreferencesManager.getTheme());
             setView(settingsPanel);
         });
 
@@ -152,11 +160,11 @@ public class MainView {
         // =======================
         //       Help menu
         // =======================
-        Menu menuHelp = new Menu(LanguageManager.getText("help.menu"));
-        MenuItem documentation = new MenuItem(LanguageManager.getText("help.documentation"));
-        MenuItem KBshortcuts = new MenuItem(LanguageManager.getText("help.KBshortcuts"));
-        MenuItem about = new MenuItem(LanguageManager.getText("help.about"));
-        MenuItem reportBug = new MenuItem(LanguageManager.getText("help.reportBug"));
+        Menu menuHelp = GlobalUtils.menu("help.menu");
+        MenuItem documentation = GlobalUtils.menuItem("help.documentation");
+        MenuItem KBshortcuts = GlobalUtils.menuItem("help.KBshortcuts");
+        MenuItem about = GlobalUtils.menuItem("help.about");
+        MenuItem reportBug = GlobalUtils.menuItem("help.reportBug");
 
         documentation.setOnAction(e -> MenuActions.documentationAction());
         KBshortcuts.setOnAction(e -> MenuActions.KBshortcutsAction());

@@ -1,3 +1,4 @@
+// com/weaverstudios/main/Main.java
 package com.weaverstudios.main;
 
 import javafx.application.Application;

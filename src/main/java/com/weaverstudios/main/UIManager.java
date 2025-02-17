@@ -1,3 +1,4 @@
+// com/weaverstudios/main/UIManager.java
 package com.weaverstudios.main;
 
 import javafx.scene.Node;

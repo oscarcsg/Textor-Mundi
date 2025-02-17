@@ -1,3 +1,4 @@
+// com/weaverstudios/main/LanguageManager.java
 package com.weaverstudios.main;
 
 import java.util.Locale;
@@ -56,7 +57,6 @@ public class LanguageManager {
     }
 
     public static String getSystemLang() {
-
         return systemLang;
     }
 }

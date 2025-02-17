@@ -1,8 +1,13 @@
-.root {
+.root, VBox {
     -fx-background-color: #1e1e1e;
     -fx-text-fill: white;
 }
-.menuBar {
+
+#menuBar {
     -fx-background-color: #1e1e1e;
     -fx-text-fill: white;
+}
+
+#menu {
+    -fx-text-fill: red;
 }

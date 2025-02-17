@@ -1,7 +1,9 @@
-//com/weaverstudios/main/MenuActions.java
+// com/weaverstudios/main/MenuActions.java
 package com.weaverstudios.main;
 
 import java.util.Locale;
+
+import com.weaverstudios.utils.GlobalUtils;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
@@ -79,48 +81,57 @@ public class MenuActions {
         settingsPanel.setMaxHeight(100);
 
         // ===== LANGUAGES ===== //
-        MenuButton languages = new MenuButton(LanguageManager.getText("lang.menu"));
-        MenuItem systemLang = new MenuItem(LanguageManager.getText("lang.systemLang"));
-        MenuItem spanish = new MenuItem(LanguageManager.getText("lang.es"));
-        MenuItem english = new MenuItem(LanguageManager.getText("lang.en"));
+        MenuButton languages = GlobalUtils.menuButton("lang.menu");
+        MenuItem systemLang = GlobalUtils.menuItem("lang.systemLang");
+        MenuItem spanish = GlobalUtils.menuItem("lang.es");
+        MenuItem english = GlobalUtils.menuItem("lang.en");
         systemLang.setOnAction(e -> {
             LanguageManager.setLanguage(Locale.of(LanguageManager.getSystemLang()));
             UIManager.updateLanguageLaunch();
             MainView.setLocale(Locale.of(LanguageManager.getSystemLang()));
+            // Update the language selected in Preferences
+            PreferencesManager.setLanguage(LanguageManager.getSystemLang());
         });
         spanish.setOnAction(e -> {
             LanguageManager.setLanguage(Locale.of("es"));
             UIManager.updateLanguageLaunch();
             MainView.setLocale(Locale.of("es"));
+            // Update the language selected in Preferences
+            PreferencesManager.setLanguage("es");
         });
         english.setOnAction(e -> {
             LanguageManager.setLanguage(Locale.of("en"));
             UIManager.updateLanguageLaunch();
             MainView.setLocale(Locale.of("en"));
+            // Update the language selected in Preferences
+            PreferencesManager.setLanguage("en");
         });
         languages.getItems().addAll(systemLang, spanish, english);
 
         // ===== THEME SWITCHING ===== //
-        MenuButton themeSwitch = new MenuButton(LanguageManager.getText("theme.switch"));
-        MenuItem systemTheme = new MenuItem(LanguageManager.getText("theme.system"));
-        MenuItem darkTheme = new MenuItem(LanguageManager.getText("theme.dark"));
-        MenuItem lightTheme = new MenuItem(LanguageManager.getText("theme.light"));
+        MenuButton themeSwitch = GlobalUtils.menuButton("theme.switch");
+        MenuItem darkTheme = GlobalUtils.menuItem("theme.dark");
+        MenuItem lightTheme = GlobalUtils.menuItem("theme.light");
         darkTheme.setOnAction(e -> {
             // First, set the new currentTheme
             currentTheme = "/com/weaverstudios/css/darkMode.css";
+            // Update the theme selected in Preferences
+            PreferencesManager.setTheme(currentTheme);
             // Then, call the method updateStyles() using the scene and the current theme
             insUIMan.updateStyles(MainView.getScene(), currentTheme);
         });
         lightTheme.setOnAction(e -> {
             // First, set the new currentTheme
             currentTheme = "/com/weaverstudios/css/lightMode.css";
+            // Update the theme selected in Preferences
+            PreferencesManager.setTheme(currentTheme);
             // Then, call the method updateStyles() using the scene and the current theme
             insUIMan.updateStyles(MainView.getScene(), currentTheme);
         });
-        themeSwitch.getItems().addAll(systemTheme, darkTheme, lightTheme);
+        themeSwitch.getItems().addAll(darkTheme, lightTheme);
 
         // ===== CLOSE SETTINGS ===== //
-        Button closeSettings = new Button(LanguageManager.getText("button.close"));
+        Button closeSettings = GlobalUtils.closeButton();
         // Set the content of the mainContent to null
         closeSettings.setOnAction(e -> MainView.getMainContent().setCenter(null));
 
