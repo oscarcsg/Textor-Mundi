@@ -1,13 +1,46 @@
-.root, VBox {
-    -fx-background-color: #1e1e1e;
+/* ======= GLOBAL STYLES ======= */
+.root {
+    -fx-background-color: #3b3b3b;
     -fx-text-fill: white;
 }
 
-#menuBar {
-    -fx-background-color: #1e1e1e;
-    -fx-text-fill: white;
+VBox, HBox {
+    -fx-background-color: #3b3b3b;
 }
 
-#menu {
-    -fx-text-fill: red;
+/* ======= MENU BAR ======= */
+.menuBar {
+    -fx-background-color: #3b3b3b;
+    -fx-border-color: #2a2a2a;
+    -fx-border-width: 0 0 1px 0; /* Adds a subtle bottom border */
+}
+
+/* ======= MENU ITEMS ======= */
+.menu .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.menu:hover {
+    -fx-background-color: #2f2f2f;
+}
+
+/* Submenu background */
+.context-menu {
+    -fx-background-color: #3b3b3b;
+    -fx-border-color: #333333;
+}
+
+/* Individual menu items */
+.menuItem {
+    -fx-background-color: #3b3b3b;
+}
+
+.menuItem:hover {
+    -fx-background-color: #2f2f2f;
+}
+
+.menuItem .label {
+    -fx-text-fill: white;
+    -fx-font-weight: normal;
 }

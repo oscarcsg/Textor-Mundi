@@ -14,7 +14,7 @@ VBox { /*Changes those caracterictics of every VBox*/
 
 /* GLOBAL BUTTONS OF SAVE, CANCEL AND CLOSE */
 #menuButton {
-
+    -fx-background-color: lightblue;
 }
 
 #saveButton {

@@ -1,9 +1,46 @@
+/* ======= GLOBAL STYLES ======= */
 .root {
     -fx-background-color: #ffffff;
-    -fx-text-fill: black;
+    -fx-text-fill: rgb(0, 0, 0);
 }
 
-#menuBar {
+VBox, HBox {
     -fx-background-color: #ffffff;
-    -fx-text-fill: black;
+}
+
+/* ======= MENU BAR ======= */
+.menuBar {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #000000;
+    -fx-border-width: 0 0 1px 0; /* Adds a subtle bottom border */
+}
+
+/* ======= MENU ITEMS ======= */
+.menu .label {
+    -fx-text-fill: rgb(0, 0, 0);
+    -fx-font-weight: bold;
+}
+
+.menu:hover {
+    -fx-background-color: #bbbbbb;
+}
+
+/* Submenu background */
+.context-menu {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #aaaaaa;
+}
+
+/* Individual menu items */
+.menuItem {
+    -fx-background-color: #ffffff;
+}
+
+.menuItem:hover {
+    -fx-background-color: #bbbbbb;
+}
+
+.menuItem .label {
+    -fx-text-fill: rgb(0, 0, 0);
+    -fx-font-weight: normal;
 }

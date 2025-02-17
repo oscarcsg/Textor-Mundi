@@ -10,7 +10,8 @@ public class Main extends Application{
         // Initialize LanguageManager for automatic language configuration
         LanguageManager.initialize();
         
-        MainView mainView = new MainView();
+        final MainView insMainView = MainView.getInstance();
+        MainView mainView = insMainView;
         mainView.show(primaryStage);
     }
     public static void main(String[] args) {

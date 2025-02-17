@@ -18,11 +18,19 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class MainView {
+    private Stage primaryStage;
     private static StackPane root; // Main container (overlay)
     private static BorderPane mainContent; // Structure with menu and main view
     private static Scene scene;
     private static MenuBar menuBar;
     private static Locale locale;
+
+    // ====== SINGLETON ======
+    private static MainView insMainView = new MainView();
+    private MainView (){} // This allows to create an instance of this class for calling methods reasons
+    public static MainView getInstance() {
+        return insMainView;
+    }
 
     // =====================================
     //         Main View creation
@@ -62,6 +70,13 @@ public class MainView {
         primaryStage.setScene(scene);
         primaryStage.setMaximized(true); // Initialize maximazed windows
         primaryStage.show();
+        this.primaryStage = primaryStage;
+    }
+
+    // Method to get the Stage
+    public Stage getStage(){
+        Stage stage = primaryStage;
+        return stage;
     }
 
     // Method to change the content of the StackPane
@@ -90,28 +105,30 @@ public class MainView {
     private MenuActions insMenAct = MenuActions.getInstance();
     private MenuBar createMenuBar() {
         menuBar = new MenuBar();
-        menuBar.setId("menuBar"); // ID for css styling
+        menuBar.getStyleClass().add("menuBar"); // ID for css styling
 
         // =======================
         //       File menu
         // =======================
         Menu menuFile = GlobalUtils.menu("file.menu");
-        MenuItem create = GlobalUtils.menuItem("file.create");
+        MenuItem newProject = GlobalUtils.menuItem("file.newProject");
         MenuItem open = GlobalUtils.menuItem("file.open");
+        MenuItem importFile = GlobalUtils.menuItem("file.import");
         MenuItem save = GlobalUtils.menuItem("file.save");
         MenuItem saveAs = GlobalUtils.menuItem("file.saveAs");
         MenuItem close = GlobalUtils.menuItem("file.close");
         MenuItem exit = GlobalUtils.menuItem("file.exit");
 
         // Asign actions to every MenuItem
-        create.setOnAction(e -> MenuActions.createAction());
-        open.setOnAction(e -> MenuActions.openAction());
+        newProject.setOnAction(e -> MenuActions.newProjectAction(insMainView.getStage()));
+        open.setOnAction(e -> MenuActions.openAction(insMainView.getStage()));
+        importFile.setOnAction(e -> MenuActions.importFileAction()); 
         save.setOnAction(e -> MenuActions.saveAction());
         saveAs.setOnAction(e -> MenuActions.saveAsAction());
         close.setOnAction(e -> MenuActions.closeAction());
         exit.setOnAction(e -> System.exit(0));
 
-        menuFile.getItems().addAll(create, open, save, saveAs, close, exit);
+        menuFile.getItems().addAll(newProject, open, importFile, save, saveAs, close, exit);
 
         // =======================
         //       Edit menu
