@@ -1,4 +1,4 @@
-VBox { /*Changes those caracterictics of every VBox*/
+.VBox { /*Changes those caracterictics of every VBox*/
     -fx-background-color: #f0f0f0;
     -fx-background-insets: 0, 0;
     -fx-padding: 10;
@@ -6,11 +6,6 @@ VBox { /*Changes those caracterictics of every VBox*/
     -fx-border-radius: 4;
     -fx-border-color: black;
 }
-
-
-
-
-
 
 /* GLOBAL BUTTONS OF SAVE, CANCEL AND CLOSE */
 #menuButton {

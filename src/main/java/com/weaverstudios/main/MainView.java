@@ -12,14 +12,12 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class MainView {
     private Stage primaryStage;
-    private static StackPane root; // Main container (overlay)
     private static BorderPane mainContent; // Structure with menu and main view
     private static Scene scene;
     private static MenuBar menuBar;
@@ -51,14 +49,14 @@ public class MainView {
         double screenWidth = screenBounds.getWidth();
         double screenHeight = screenBounds.getHeight();
 
-        // Create topBar, MenuBar
+        // Create MenuBar
         mainContent.setTop(createMenuBar());
 
-        // Create StackPanel and add its content
-        root = new StackPane(mainContent);
+        // Create subApp selection panel
+        mainContent.setLeft(createSubAppSelectionPanel());
 
         // Create scene and show
-        scene = new Scene(root, screenWidth, screenHeight);
+        scene = new Scene(mainContent, screenWidth, screenHeight);
         // First charge the global styles sheet
         scene.getStylesheets().add(getClass().getResource("/com/weaverstudios/css/global.css").toExternalForm());
         // Charge theme styles sheet
@@ -97,6 +95,18 @@ public class MainView {
         return currentScene;
     }
 
+
+    // =======================================
+    //   MenuBar (File, View, Settings, etc)
+    // =======================================
+    private VBox createSubAppSelectionPanel() {
+        VBox subAppSelectionPanel = new VBox();
+        subAppSelectionPanel.getStyleClass().add("sidePanel");
+
+        //subAppSelectionPanel.getChildren().add(new Label("·"));
+
+        return subAppSelectionPanel;
+    }
 
 
     // =======================================
@@ -190,6 +200,9 @@ public class MainView {
 
         menuHelp.getItems().addAll(documentation, KBshortcuts, about, reportBug);
 
+        // =======================
+        //      SidePanel Btn
+        // =======================
 
         menuBar.getMenus().addAll(menuFile, menuEdit, menuView, menuTools, menuHelp);
         return menuBar;

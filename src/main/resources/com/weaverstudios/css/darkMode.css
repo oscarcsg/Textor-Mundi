@@ -4,15 +4,23 @@
     -fx-text-fill: white;
 }
 
-VBox, HBox {
-    -fx-background-color: #3b3b3b;
+.VBox{
+    -fx-background-color: #454545;
+}
+
+/* ====== SIDE PANEL ====== */
+.sidePanel {
+    -fx-background-color: #454545;
+    -fx-border-color: #2a2a2a;
+    -fx-border-width: 0 2px 0 0;
+    -fx-padding: 20;
 }
 
 /* ======= MENU BAR ======= */
 .menuBar {
-    -fx-background-color: #3b3b3b;
+    -fx-background-color: #454545;
     -fx-border-color: #2a2a2a;
-    -fx-border-width: 0 0 1px 0; /* Adds a subtle bottom border */
+    -fx-border-width: 0 0 2px 0; /* Adds a subtle bottom border */
 }
 
 /* ======= MENU ITEMS ======= */
@@ -27,13 +35,13 @@ VBox, HBox {
 
 /* Submenu background */
 .context-menu {
-    -fx-background-color: #3b3b3b;
+    -fx-background-color: #454545;
     -fx-border-color: #333333;
 }
 
 /* Individual menu items */
 .menuItem {
-    -fx-background-color: #3b3b3b;
+    -fx-background-color: #454545;
 }
 
 .menuItem:hover {

@@ -5,6 +5,8 @@ import com.weaverstudios.main.LanguageManager;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuButton;
@@ -60,5 +62,17 @@ public class GlobalUtils {
         MenuItem menuItem = new MenuItem(LanguageManager.getText(langKey));
         menuItem.getStyleClass().add("menuItem");
         return menuItem;
+    }
+
+    public static VBox vBox() {
+        VBox vBox = new VBox();
+        vBox.getStyleClass().add("VBox");
+        return vBox;
+    }
+
+    public static HBox hBox() {
+        HBox hBox = new HBox();
+        hBox.getStyleClass().add("HBox");
+        return hBox;
     }
 }
