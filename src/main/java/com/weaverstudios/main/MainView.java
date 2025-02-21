@@ -5,19 +5,27 @@ import java.util.Locale;
 
 import com.weaverstudios.utils.GlobalUtils;
 
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class MainView {
     private Stage primaryStage;
+    private static StackPane mainContainer; // Container that will allow over
     private static BorderPane mainContent; // Structure with menu and main view
     private static Scene scene;
     private static MenuBar menuBar;
@@ -48,6 +56,7 @@ public class MainView {
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
         double screenWidth = screenBounds.getWidth();
         double screenHeight = screenBounds.getHeight();
+        //System.out.println("width:" + screenWidth + "height: " + screenHeight);
 
         // Create MenuBar
         mainContent.setTop(createMenuBar());
@@ -55,8 +64,13 @@ public class MainView {
         // Create subApp selection panel
         mainContent.setLeft(createSubAppSelectionPanel());
 
+        mainContent.setCenter(defContent());
+
+        mainContainer = new StackPane();
+        mainContainer.getChildren().add(mainContent);
+
         // Create scene and show
-        scene = new Scene(mainContent, screenWidth, screenHeight);
+        scene = new Scene(mainContainer, screenWidth, screenHeight);
         // First charge the global styles sheet
         scene.getStylesheets().add(getClass().getResource("/com/weaverstudios/css/global.css").toExternalForm());
         // Charge theme styles sheet
@@ -79,12 +93,22 @@ public class MainView {
 
     // Method to change the content of the StackPane
     public void setView(Node view) {
-        mainContent.setCenter(view);
+        if (!mainContainer.getChildren().contains(view)) {
+            mainContainer.getChildren().add(view);
+        }
     }
+    public void removeView(Node view) {
+        mainContainer.getChildren().remove(view);
+    }    
+
     // Get the mainContent to update languages
     public static BorderPane getMainContent() {
         return mainContent;
     }
+    public static StackPane getMainContainer() {
+        return mainContainer;
+    }
+
     // Asign the actual locale to 'locale' variable
     public Locale setCurrentLocale() {
         return LanguageManager.getCurrentLocale();
@@ -97,7 +121,7 @@ public class MainView {
 
 
     // =======================================
-    //   MenuBar (File, View, Settings, etc)
+    //      Sub App Selection Side Panel
     // =======================================
     private VBox createSubAppSelectionPanel() {
         VBox subAppSelectionPanel = new VBox();
@@ -179,6 +203,7 @@ public class MainView {
         settings.setOnAction(e -> {
             VBox settingsPanel = insMenAct.settingsAction();
             UIManager.getInstance().updateStyles(settingsPanel, PreferencesManager.getTheme());
+            mainContainer.setOnMouseClicked(event -> removeView(settingsPanel)); // Cierra al hacer clic afuera
             setView(settingsPanel);
         });
 
@@ -209,7 +234,6 @@ public class MainView {
     }
 
 
-
     // =========================================
     //      Operations to update language
     // =========================================
@@ -218,5 +242,84 @@ public class MainView {
     }
     public static Locale getLocale(){
         return locale;
+    }
+
+
+    // =========================================
+    //    Default content of the mainContent
+    // =========================================
+    private VBox defContent() {
+        // Create main container
+        VBox defContent = new VBox();
+        defContent.setAlignment(Pos.TOP_CENTER);
+        defContent.setPrefHeight(mainContent.getHeight()); // Set height to the entire mainContent space
+
+        // Welcome text label
+        Label welcome = new Label(LanguageManager.getText("label.defContent.welcome"));
+
+        // Container to divide the two info columns
+        HBox colsContainer = new HBox(10); // With 10 of spacing between its children 
+        colsContainer.setAlignment(Pos.CENTER);
+
+
+        // Container of the left-column info
+        VBox leftCol = new VBox();
+        leftCol.setAlignment(Pos.CENTER_LEFT);
+
+        HBox leftColHTSContainer = new HBox();
+        leftColHTSContainer.setAlignment(Pos.CENTER_LEFT);
+
+        VBox hTsInfo = new VBox();
+        hTsInfo.setAlignment(Pos.CENTER_LEFT);
+
+        Label howToStart = new Label(LanguageManager.getText("label.leftCol.howToStart"));
+        Label firstStep = new Label(LanguageManager.getText("label.leftCol.firstStep"));
+        Label secondStep = new Label(LanguageManager.getText("label.leftCol.secondStep"));
+        Label thirdStep = new Label(LanguageManager.getText("label.leftCol.thirdStep"));
+
+        // Crear el botón
+        Button myButton = new Button("Continuar");
+        myButton.setOnAction(null);
+
+        // Contenedor para el botón con un espacio flexible
+        HBox buttonContainer = new HBox();
+        Region spacer = new Region();
+        spacer.setMaxWidth(20);
+        HBox.setHgrow(spacer, Priority.ALWAYS); // Hace que el espacio empuje el botón hacia la derecha
+        buttonContainer.getChildren().addAll(spacer, myButton);
+
+        hTsInfo.getChildren().addAll(
+            howToStart,
+            firstStep,
+            secondStep,
+            buttonContainer,
+            thirdStep
+        );
+        spacer.setMaxWidth(200);
+        leftColHTSContainer.getChildren().addAll(
+            spacer,
+            hTsInfo
+        );
+        leftCol.getChildren().addAll(
+            leftColHTSContainer
+        );
+        
+
+        // Container of the right-column info
+        VBox rightCol = new VBox();
+        rightCol.setAlignment(Pos.CENTER);
+        rightCol.getChildren().add(new Label(LanguageManager.getText("label.rightCol.developing")));
+
+        colsContainer.getChildren().addAll(leftCol, rightCol);
+
+
+        VBox.setVgrow(colsContainer, Priority.ALWAYS);
+        HBox.setHgrow(leftCol, Priority.ALWAYS);
+        HBox.setHgrow(rightCol, Priority.ALWAYS);
+        defContent.getChildren().addAll(
+            welcome,
+            colsContainer
+        );
+        return defContent;
     }
 }

@@ -1,11 +1,11 @@
 // com/weaverstudios/main/MenuActions.java
 package com.weaverstudios.main;
 
-import com.weaverstudios.utils.GlobalUtils;
-
 import java.io.File;
 import java.util.Locale;
 import java.util.Optional;
+
+import com.weaverstudios.utils.GlobalUtils;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
@@ -22,6 +22,11 @@ public class MenuActions {
     public static MenuActions getInstance() {
         return insMenAct;
     }
+
+
+    private UIManager insUIMan = UIManager.getInstance();
+    //private MainView insMainView = MainView.getInstance();
+
 
     // =======================
     //       File menu
@@ -160,7 +165,6 @@ public class MenuActions {
     //       Tools menu    // MenuActions.java
     // =======================
     private static String currentTheme = "/com/weaverstudios/css/lightMode.css";
-    private UIManager insUIMan = UIManager.getInstance();
 
     public VBox settingsAction() {
         VBox settingsPanel = new VBox(10);
@@ -220,9 +224,9 @@ public class MenuActions {
         themeSwitch.getItems().addAll(darkTheme, lightTheme);
 
         // ===== CLOSE SETTINGS ===== //
-        Button closeSettings = GlobalUtils.closeButton();
+        Button closeSettings = GlobalUtils.closeButton(settingsPanel);
         // Set the content of the mainContent to null
-        closeSettings.setOnAction(e -> MainView.getMainContent().setCenter(null));
+        //closeSettings.setOnAction(e -> MainView.getMainContainer().getChildren().remove(settingsPanel));
 
         settingsPanel.getChildren().addAll(
             languages,

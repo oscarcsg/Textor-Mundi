@@ -2,7 +2,9 @@
 package com.weaverstudios.utils;
 
 import com.weaverstudios.main.LanguageManager;
+import com.weaverstudios.main.MainView;
 
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.HBox;
@@ -28,15 +30,17 @@ public class GlobalUtils {
      *          ID can be changed to those specific buttons and interfaces that requires to
      *          apply any specific style ONLY to that one.
      */
-    public static Button closeButton() {
+    public static Button closeButton(Node panel) {
         Button closeButton = new Button(LanguageManager.getText("button.close"));
         closeButton.setId("closeButton");
+        closeButton.setOnAction(e -> MainView.getMainContainer().getChildren().remove(panel));
         return closeButton;
     }
 
-    public static Button cancelButton() {
+    public static Button cancelButton(Node panel) {
         Button cancelButton = new Button(LanguageManager.getText("button.cancel"));
         cancelButton.setId("cancelButton");
+        cancelButton.setOnAction(e -> MainView.getMainContainer().getChildren().remove(panel));
         return cancelButton;
     }
 

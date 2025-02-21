@@ -4,8 +4,12 @@
     -fx-text-fill: white;
 }
 
-.VBox{
+.VBox {
     -fx-background-color: #454545;
+}
+
+Label {
+    -fx-text-fill: white;
 }
 
 /* ====== SIDE PANEL ====== */

@@ -7,6 +7,10 @@
     -fx-border-color: black;
 }
 
+Label {
+    -fx-font-size: 16px;
+}
+
 /* GLOBAL BUTTONS OF SAVE, CANCEL AND CLOSE */
 #menuButton {
     -fx-background-color: lightblue;
