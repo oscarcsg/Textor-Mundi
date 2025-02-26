@@ -14,21 +14,27 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 
+/*
+ * Utility class providing global UI components and methods for common tasks.
+ * This class centralizes the creation of UI elements, ensuring consistency
+ * and facilitating easy modifications to styles and behavior. Each global UI
+ * element has its own ID for styling.
+ */
 public class GlobalUtils {
-    // Method to show an error alert
+    /*
+     * Displays an error alert dialog with a given title and message
+     */
     public static void showError(String title, String message) {
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle(title);
-        alert.setHeaderText(null);
+        alert.setHeaderText(null); // No header text is set
         alert.setContentText(message);
-        alert.showAndWait();
+        alert.showAndWait(); // Display the alert and wait for user acknowledgment
     }
 
+
     /*
-     *  CLASS INFORMATION:      In this class is where the different buttons and interfaces
-     *          are builded. This is done here to asign a global ID to every of these, this
-     *          ID can be changed to those specific buttons and interfaces that requires to
-     *          apply any specific style ONLY to that one.
+     * Creates a close button that removes a given panel from the main container
      */
     public static Button closeButton(Node panel) {
         Button closeButton = new Button(LanguageManager.getText("button.close"));
@@ -37,6 +43,9 @@ public class GlobalUtils {
         return closeButton;
     }
 
+    /*
+     * Creates a cancel button that removes a given panel from the main container
+     */
     public static Button cancelButton(Node panel) {
         Button cancelButton = new Button(LanguageManager.getText("button.cancel"));
         cancelButton.setId("cancelButton");
@@ -44,36 +53,54 @@ public class GlobalUtils {
         return cancelButton;
     }
 
+    /*
+     * Creates a save button without specific functionality
+     */
     public static Button saveButton() {
         Button saveButton = new Button(LanguageManager.getText("button.save"));
         saveButton.setId("saveButton");
         return saveButton;
     }
 
+    /*
+     * Creates a Menu object with a text label retrieved from language settings
+     */
     public static Menu menu(String langKey) {
         Menu menu = new Menu(LanguageManager.getText(langKey));
         menu.getStyleClass().add("menu");
         return menu;
     }
 
+    /*
+     * Creates a MenuButton object with a text label retrieved from language settings
+     */
     public static MenuButton menuButton(String langKey) {
         MenuButton menuButton = new MenuButton(LanguageManager.getText(langKey));
         menuButton.setId("menuButton");
         return menuButton;
     }
 
+    /*
+     * Creates a MenuItem object with a text label retrieved from language settings
+     */
     public static MenuItem menuItem(String langKey) {
         MenuItem menuItem = new MenuItem(LanguageManager.getText(langKey));
         menuItem.getStyleClass().add("menuItem");
         return menuItem;
     }
 
+    /*
+     * Creates a VBox (Vertical Box) container with a predefined style
+     */
     public static VBox vBox() {
         VBox vBox = new VBox();
         vBox.getStyleClass().add("VBox");
         return vBox;
     }
 
+    /*
+     * Creates an HBox (Horizontal Box) container with a predefined style
+     */
     public static HBox hBox() {
         HBox hBox = new HBox();
         hBox.getStyleClass().add("HBox");

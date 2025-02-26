@@ -15,6 +15,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
+/*
+ * This class manages actions associated with the application's menu
+ * It includes functionality for file operations, editing, viewing, tools, and help options
+ */
 public class MenuActions {
     // ====== SINGLETON ======
     private static MenuActions insMenAct = new MenuActions();
@@ -24,14 +28,19 @@ public class MenuActions {
     }
 
 
+    // Instance of UIManager to manage UI updates
     private UIManager insUIMan = UIManager.getInstance();
-    //private MainView insMainView = MainView.getInstance();
+
 
 
     // =======================
     //       File menu
     // =======================
-    //private MainView insMainView = MainView.getInstance();
+
+    /*
+     * Handles the creation of a new project by prompting the user to enter a project name
+     * and selecting a directory to store it
+     */
     public static void newProjectAction(Stage currentStage) {
         // Prompt user to enter project name
         TextInputDialog nameDialog = new TextInputDialog("NewProject");
@@ -41,6 +50,7 @@ public class MenuActions {
 
         Optional<String> result = nameDialog.showAndWait();
 
+        // Check if the user entered a valid name
         if (result.isPresent() && !result.get().trim().isEmpty()) {
             String projectName = result.get().trim();
 
@@ -58,14 +68,12 @@ public class MenuActions {
                     if (newProjectFolder.mkdir()) {
                         System.out.println("Project folder created at: " + newProjectFolder.getAbsolutePath());
 
-                        // Close the current window
-                        //currentStage.close();
-
-                        // Load the new project into the application
-                        //loadProject(newProjectFolder);
+                        // If the new project can be created, also charge it to the app
+                        ProjectManager.loadProjectFiles(newProjectFolder);
                     } else {
                         // FAILED TO CREATE THE PROJECT FOLDER
                         System.out.println("Failed to create the project folder.");
+                        // Show error if the project can't be created
                         GlobalUtils.showError(LanguageManager.getText("error.failCreateFolder.title"),
                                               LanguageManager.getText("error.failCreateFolder"));
                     }
@@ -84,6 +92,9 @@ public class MenuActions {
         }
     }
 
+    /*
+     * Opens an existing project by allowing the user to select a project directory
+     */
     public static void openAction(Stage currentStage) {
         // Create a DirectoryChooser instance to allow the user to select a project folder
         DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -105,6 +116,8 @@ public class MenuActions {
         } else {
             // Notify the user that no valid folder was selected
             System.out.println("No valid folder selected");
+            GlobalUtils.showError(LanguageManager.getText("error.folderOppening.title"),
+                                  LanguageManager.getText("error.folderOppening"));
         }
     }
 
@@ -162,14 +175,19 @@ public class MenuActions {
 
 
     // =======================
-    //       Tools menu    // MenuActions.java
+    //       Tools menu
     // =======================
-    private static String currentTheme = "/com/weaverstudios/css/lightMode.css";
+    //private static String currentTheme = "/com/weaverstudios/css/lightMode.css";
 
+    /*
+     * Creates and returns a settings panel with options // MenuActions.java
+     */
     public VBox settingsAction() {
         VBox settingsPanel = new VBox(10);
-        // Max width and height of settingsPanel in %, so it doesn't show problems with the screen size and it adjust to the
-        // scene size also
+        /*
+         * Max width and height of settingsPanel in %, so it doesn't show problems with the screen
+         * size and it adjust to the scene size also
+         */
         settingsPanel.maxWidthProperty().bind(MainView.getMainContent().widthProperty().multiply(0.2));
         settingsPanel.maxHeightProperty().bind(MainView.getMainContent().heightProperty().multiply(0.1));
 
@@ -179,25 +197,49 @@ public class MenuActions {
         MenuItem spanish = GlobalUtils.menuItem("lang.es");
         MenuItem english = GlobalUtils.menuItem("lang.en");
         systemLang.setOnAction(e -> {
-            LanguageManager.setLanguage(Locale.of(LanguageManager.getSystemLang()));
-            UIManager.updateLanguageLaunch();
-            MainView.setLocale(Locale.of(LanguageManager.getSystemLang()));
-            // Update the language selected in Preferences
-            PreferencesManager.setLanguage(LanguageManager.getSystemLang());
+            try {
+                if (!PreferencesManager.getLanguage().equals(LanguageManager.getSystemLang())) {
+                    LanguageManager.setLanguage(Locale.of(LanguageManager.getSystemLang()));
+                    UIManager.updateLanguageLaunch();
+                    MainView.setLocale(Locale.of(LanguageManager.getSystemLang()));
+                    // Update the language selected in Preferences
+                    PreferencesManager.setLanguage(LanguageManager.getSystemLang());
+                } else {
+                    System.out.println("User has selected the current language.");
+                }
+            } catch (Exception ex) {
+                System.out.println("An error occurred while changing the language.");
+            }
         });
         spanish.setOnAction(e -> {
-            LanguageManager.setLanguage(Locale.of("es"));
-            UIManager.updateLanguageLaunch();
-            MainView.setLocale(Locale.of("es"));
-            // Update the language selected in Preferences
-            PreferencesManager.setLanguage("es");
+            try {
+                if (!PreferencesManager.getLanguage().equals(LanguageManager.getCurrentLocale().getLanguage())) {
+                    LanguageManager.setLanguage(Locale.of("es"));
+                    UIManager.updateLanguageLaunch();
+                    MainView.setLocale(Locale.of("es"));
+                    // Update the language selected in Preferences
+                    PreferencesManager.setLanguage("es");
+                } else {
+                    System.out.println("User has selected the current language.");
+                }
+            } catch (Exception ex) {
+                System.out.println("An error occurred while changing the language.");
+            }
         });
         english.setOnAction(e -> {
-            LanguageManager.setLanguage(Locale.of("en"));
-            UIManager.updateLanguageLaunch();
-            MainView.setLocale(Locale.of("en"));
-            // Update the language selected in Preferences
-            PreferencesManager.setLanguage("en");
+            try {
+                if (!PreferencesManager.getLanguage().equals(LanguageManager.getCurrentLocale().getLanguage())) {
+                    LanguageManager.setLanguage(Locale.of("en"));
+                    UIManager.updateLanguageLaunch();
+                    MainView.setLocale(Locale.of("en"));
+                    // Update the language selected in Preferences
+                    PreferencesManager.setLanguage("en");
+                } else {
+                    System.out.println("User has selected the current language.");
+                }
+            } catch (Exception ex) {
+                System.out.println("An error occurred while changing the language.");
+            }
         });
         languages.getItems().addAll(systemLang, spanish, english);
 
@@ -206,43 +248,45 @@ public class MenuActions {
         MenuItem darkTheme = GlobalUtils.menuItem("theme.dark");
         MenuItem lightTheme = GlobalUtils.menuItem("theme.light");
         darkTheme.setOnAction(e -> {
-            // First, set the new currentTheme
-            currentTheme = "/com/weaverstudios/css/darkMode.css";
-            // Update the theme selected in Preferences
-            PreferencesManager.setTheme(currentTheme);
-            // Then, call the method updateStyles() using the scene and the current theme
-            insUIMan.updateStyles(MainView.getScene(), currentTheme);
+            try {
+                if (!PreferencesManager.getTheme().equals("darkMode")) {
+                    // Update the theme selected in Preferences
+                    PreferencesManager.setTheme("darkMode");
+                    // Then, call the method updateStyles() using the scene and the current theme
+                    insUIMan.updateStyles(MainView.getScene());
+                } else {
+                    System.out.println("User has selected the current theme.");
+                }
+            } catch (Exception ex) {
+                System.out.println("An error occurred while changing the theme.");
+            }
         });
         lightTheme.setOnAction(e -> {
-            // First, set the new currentTheme
-            currentTheme = "/com/weaverstudios/css/lightMode.css";
-            // Update the theme selected in Preferences
-            PreferencesManager.setTheme(currentTheme);
-            // Then, call the method updateStyles() using the scene and the current theme
-            insUIMan.updateStyles(MainView.getScene(), currentTheme);
+            try {
+                if (!PreferencesManager.getTheme().equals("lightMode")) {
+                    // Update the theme selected in Preferences
+                    PreferencesManager.setTheme("lightMode");
+                    // Then, call the method updateStyles() using the scene and the current theme
+                    insUIMan.updateStyles(MainView.getScene());
+                } else {
+                    System.out.println("User has selected the current theme.");
+                }
+            } catch (Exception ex) {
+                System.out.println("An error occurred while changing the theme.");
+            }
         });
         themeSwitch.getItems().addAll(darkTheme, lightTheme);
 
         // ===== CLOSE SETTINGS ===== //
         Button closeSettings = GlobalUtils.closeButton(settingsPanel);
         // Set the content of the mainContent to null
-        //closeSettings.setOnAction(e -> MainView.getMainContainer().getChildren().remove(settingsPanel));
 
         settingsPanel.getChildren().addAll(
             languages,
             themeSwitch,
-
             closeSettings
         );
         return settingsPanel;
-    }
-
-    public static String getCurrentTheme() {
-        return currentTheme;
-    }
-
-    public static void setCurrentTheme(String newTheme) {
-        currentTheme = newTheme;
     }
 
 

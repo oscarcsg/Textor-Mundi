@@ -4,46 +4,70 @@ package com.weaverstudios.main;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/*
+ * LanguageManager handles the application's localization by managing language settings
+ * and loading appropriate resource bundles for translations
+ */
 public class LanguageManager {
+    // Stores the system's default language
     private static final String systemLang = Locale.getDefault().getLanguage();
+    // ResourceBundle to hold the loaded language properties
     private static ResourceBundle resourceBundle;
+    // Stores the currently selected language as a string
     private static String languageString;
+    // Stores the current Locale object
     private static Locale language;
 
-    // Método para inicializar el LanguageManager y cargar el idioma
+
+    // ========================================================================================
+    //   Initializes the LanguageManager by detecting the system language and setting it up
+    // ========================================================================================
     public static void initialize() {
-        // Detectar el idioma del sistema
+        // Detect system language
         languageString = Locale.getDefault().getLanguage();
+        
+        // Create a Locale object from the detected language
         language = Locale.forLanguageTag(languageString);
 
-        // Cargar el archivo de propiedades según el idioma
+        // Load the appropriate language properties file
         setLanguage(Locale.of(languageString));
     }
 
-    // Método para cambiar el idioma (puede ser llamado desde la interfaz de usuario)
+
+    // ====================================================================================
+    //   Sets the application's language
+    //   This method loads the appropriate properties file based on the provided locale
+    // ====================================================================================
     public static void setLanguage(Locale locale) {
         language = locale;
         try {
-            // Intentar cargar el archivo de propiedades para el idioma seleccionado
+            // Attempt to load the resource bundle for the specified language
             resourceBundle = ResourceBundle.getBundle("com.weaverstudios.languages.messages", locale);
         } catch (Exception e) {
             e.printStackTrace();
-            // Si ocurre un error, cargar el archivo por defecto (inglés)
+            // If an error occurs, fallback to English as the default language
             resourceBundle = ResourceBundle.getBundle("com.weaverstudios.languages.messages", Locale.ENGLISH);
         }
     }
 
-    // Método para obtener los textos (para ser usados en la interfaz de usuario)
+
+    // =================================================
+    //   Retrieves the localized text for a given key
+    // =================================================
     public static String getText(String key) {
         return resourceBundle.getString(key);
     }
 
-    // Method to obtain the keys of texts (for update language)
+
+    // =====================================================================
+    //    Finds the key associated with a given text in a specific locale
+    //    This is useful for updating translations dynamically
+    // =====================================================================
     public static String getKey(String text, Locale locale) {
-        // Charge properties file by locale
+        // Load the properties file for the given locale
         ResourceBundle bundle = ResourceBundle.getBundle("com.weaverstudios.languages.messages", locale);
 
-        // Iterates over keys from ResourceBundle and search equal value to text
+        // Iterate over the keys in the resource bundle to find a matching text value
         for (String key : bundle.keySet()) {
             if (bundle.getString(key).equals(text)) {
                 return key;
@@ -52,10 +76,16 @@ public class LanguageManager {
         return null;
     }
 
+    // ===============================================================
+    //    Returns the current locale being used by the application
+    // ===============================================================
     public static Locale getCurrentLocale() {
         return language;
     }
 
+    // =======================================================
+    //   Returns the system's default language as a string
+    // =======================================================
     public static String getSystemLang() {
         return systemLang;
     }
