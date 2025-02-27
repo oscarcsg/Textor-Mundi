@@ -184,6 +184,8 @@ public class MenuActions {
      */
     public VBox settingsAction() {
         VBox settingsPanel = new VBox(10);
+        settingsPanel.setId("settingsPanel");
+
         /*
          * Max width and height of settingsPanel in %, so it doesn't show problems with the screen
          * size and it adjust to the scene size also
@@ -213,7 +215,7 @@ public class MenuActions {
         });
         spanish.setOnAction(e -> {
             try {
-                if (!PreferencesManager.getLanguage().equals(LanguageManager.getCurrentLocale().getLanguage())) {
+                if (!PreferencesManager.getLanguage().equals("es")) {
                     LanguageManager.setLanguage(Locale.of("es"));
                     UIManager.updateLanguageLaunch();
                     MainView.setLocale(Locale.of("es"));
@@ -228,7 +230,7 @@ public class MenuActions {
         });
         english.setOnAction(e -> {
             try {
-                if (!PreferencesManager.getLanguage().equals(LanguageManager.getCurrentLocale().getLanguage())) {
+                if (!PreferencesManager.getLanguage().equals("en")) {
                     LanguageManager.setLanguage(Locale.of("en"));
                     UIManager.updateLanguageLaunch();
                     MainView.setLocale(Locale.of("en"));
@@ -249,9 +251,9 @@ public class MenuActions {
         MenuItem lightTheme = GlobalUtils.menuItem("theme.light");
         darkTheme.setOnAction(e -> {
             try {
-                if (!PreferencesManager.getTheme().equals("darkMode")) {
+                if (!PreferencesManager.getTheme().equals("darkTheme")) {
                     // Update the theme selected in Preferences
-                    PreferencesManager.setTheme("darkMode");
+                    PreferencesManager.setTheme("darkTheme");
                     // Then, call the method updateStyles() using the scene and the current theme
                     insUIMan.updateStyles(MainView.getScene());
                 } else {
@@ -263,9 +265,9 @@ public class MenuActions {
         });
         lightTheme.setOnAction(e -> {
             try {
-                if (!PreferencesManager.getTheme().equals("lightMode")) {
+                if (!PreferencesManager.getTheme().equals("lightTheme")) {
                     // Update the theme selected in Preferences
-                    PreferencesManager.setTheme("lightMode");
+                    PreferencesManager.setTheme("lightTheme");
                     // Then, call the method updateStyles() using the scene and the current theme
                     insUIMan.updateStyles(MainView.getScene());
                 } else {

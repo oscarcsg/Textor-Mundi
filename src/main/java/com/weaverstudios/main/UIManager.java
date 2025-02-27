@@ -125,54 +125,24 @@ public class UIManager {
      *            CALLING THE METHOD WILL FAIL. ON THE OTHER HAND, THESE METHODS COULD
      *            BE STATIC, BUT 'getClass()' WOULD NOT WORK
      */
-    String currentTheme;
     
     // Method to update stylesheets for a Scene
     public void updateStyles(Scene scene) {
         // Set the variable 'currentTheme'
-        currentTheme = "/com/weaverstudios/css/" + PreferencesManager.getTheme() + ".css";
+        String currentTheme = "/com/weaverstudios/css/" + PreferencesManager.getTheme() + ".css";
         // Clear existing stylesheets
         scene.getStylesheets().clear();
-        // Add the global stylesheet
-        scene.getStylesheets().add(getClass().getResource("/com/weaverstudios/css/global.css").toExternalForm());
         // Add the current theme stylesheet
         scene.getStylesheets().add(getClass().getResource(currentTheme).toExternalForm());
     }
 
-    public void updateStyles(Scene scene, String dedicatedStyleSheet) {
-        // Set the variable 'currentTheme'
-        currentTheme = "/com/weaverstudios/css/" + PreferencesManager.getTheme() + ".css";
-        // Clear existing stylesheets
-        scene.getStylesheets().clear();
-        // Add the global stylesheet
-        scene.getStylesheets().add(getClass().getResource("/com/weaverstudios/css/global.css").toExternalForm());
-        // Add the current theme stylesheet
-        scene.getStylesheets().add(getClass().getResource(currentTheme).toExternalForm());
-        // Add the dedicated stylesheet
-        scene.getStylesheets().add(getClass().getResource(dedicatedStyleSheet).toExternalForm());
-    }
-
+    // Method to update stylesheets for a Parent
     public void updateStyles(Parent parent) {
         // Set the variable 'currentTheme'
-        currentTheme = "/com/weaverstudios/css/" + PreferencesManager.getTheme() + ".css";
+        String currentTheme = "/com/weaverstudios/css/" + PreferencesManager.getTheme() + ".css";
         // Clear existing stylesheets
         parent.getStylesheets().clear();
-        // Add the global stylesheet
-        parent.getStylesheets().add(getClass().getResource("/com/weaverstudios/css/global.css").toExternalForm());
         // Add the current theme stylesheet
         parent.getStylesheets().add(getClass().getResource(currentTheme).toExternalForm());
-    }
-
-    public void updateStyles(Parent parent, String dedicatedStyleSheet) {
-        // Set the variable 'currentTheme'
-        currentTheme = "/com/weaverstudios/css/" + PreferencesManager.getTheme() + ".css";
-        // Clear existing stylesheets
-        parent.getStylesheets().clear();
-        // Add the global stylesheet
-        parent.getStylesheets().add(getClass().getResource("/com/weaverstudios/css/global.css").toExternalForm());
-        // Add the current theme stylesheet
-        parent.getStylesheets().add(getClass().getResource(currentTheme).toExternalForm());
-        // Add the dedicated stylesheet
-        parent.getStylesheets().add(getClass().getResource(dedicatedStyleSheet).toExternalForm());
     }
 }

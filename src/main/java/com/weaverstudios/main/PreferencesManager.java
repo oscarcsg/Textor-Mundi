@@ -28,7 +28,7 @@ public class PreferencesManager {
     // Method to get the user's preferred theme
     public static String getTheme() {
         // Retrieving the theme from preferences, with a default value if not set
-        return prefs.get(THEME_KEY, "lightMode");
+        return prefs.get(THEME_KEY, "lightTheme");
     }
 
     // ===== LANGUAGE ===== //

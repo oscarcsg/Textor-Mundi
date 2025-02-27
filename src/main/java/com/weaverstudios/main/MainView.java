@@ -75,12 +75,8 @@ public class MainView {
 
         // Create scene and show
         scene = new Scene(mainContainer, screenWidth, screenHeight);
-        // First charge the global styles sheet
-        scene.getStylesheets().add(getClass().getResource("/com/weaverstudios/css/global.css").toExternalForm());
         // Charge theme styles sheet
         UIManager.getInstance().updateStyles(scene);
-        // Then charge the specific MainView styles sheet
-        scene.getStylesheets().add(getClass().getResource("/com/weaverstudios/css/MainView.css").toExternalForm());
 
         primaryStage.setTitle("Textor Mundi");
         primaryStage.setScene(scene);
@@ -210,7 +206,6 @@ public class MainView {
         settings.setOnAction(e -> {
             VBox settingsPanel = insMenAct.settingsAction();
             UIManager.getInstance().updateStyles(settingsPanel);
-            mainContainer.setOnMouseClicked(event -> removeView(settingsPanel)); // Cierra al hacer clic afuera
             setView(settingsPanel);
         });
 
