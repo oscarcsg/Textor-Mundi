@@ -3,6 +3,7 @@ package com.weaverstudios.main;
 
 import java.util.Locale;
 
+import com.weaverstudios.timeLine.ui.TimeLineMV;
 import com.weaverstudios.utils.GlobalUtils;
 
 import javafx.geometry.Pos;
@@ -90,14 +91,19 @@ public class MainView {
         return primaryStage;
     }
 
+    // Changes the mainContent (center)
+    public static void setMainContent(Node view) {
+        mainContent.setCenter(view);
+    }
+
     // Adds a new view (overlay) to the main container
-    public void setView(Node view) {
+    public static void setOverlayView(Node view) {
         if (!mainContainer.getChildren().contains(view)) {
             mainContainer.getChildren().add(view);
         }
     }
     // Removes a view from the main container
-    public void removeView(Node view) {
+    public void removeOverlayView(Node view) {
         mainContainer.getChildren().remove(view);
     }    
 
@@ -126,11 +132,18 @@ public class MainView {
     // =======================================
     //      Sub App Selection Side Panel
     // =======================================
+    private GlobalUtils insGloUt = GlobalUtils.getInstance();
     private VBox createSubAppSelectionPanel() {
         VBox subAppSelectionPanel = new VBox();
         subAppSelectionPanel.getStyleClass().add("sidePanel");
 
-        //subAppSelectionPanel.getChildren().add(new Label("·"));
+        subAppSelectionPanel.getChildren().addAll(
+            insGloUt.imgButton(
+                "prueba.png",
+                "sidePanel.button.timeLine",
+                TimeLineMV.timeLineMainView()
+            )
+        );
 
         return subAppSelectionPanel;
     }
@@ -206,7 +219,7 @@ public class MainView {
         settings.setOnAction(e -> {
             VBox settingsPanel = insMenAct.settingsAction();
             UIManager.getInstance().updateStyles(settingsPanel);
-            setView(settingsPanel);
+            setOverlayView(settingsPanel);
         });
 
         menuTools.getItems().addAll(settings);

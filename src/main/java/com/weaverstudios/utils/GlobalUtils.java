@@ -4,15 +4,19 @@ package com.weaverstudios.utils;
 import com.weaverstudios.main.LanguageManager;
 import com.weaverstudios.main.MainView;
 
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 /*
  * Utility class providing global UI components and methods for common tasks.
@@ -21,6 +25,13 @@ import javafx.scene.control.MenuItem;
  * element has its own ID for styling.
  */
 public class GlobalUtils {
+    // ====== SINGLETON ======
+    private static GlobalUtils insGloUt = new GlobalUtils();
+    private GlobalUtils (){} // This allows to create an instance of this class for calling methods reasons
+    public static GlobalUtils getInstance() {
+        return insGloUt;
+    }
+
     /*
      * Displays an error alert dialog with a given title and message
      */
@@ -105,5 +116,32 @@ public class GlobalUtils {
         HBox hBox = new HBox();
         hBox.getStyleClass().add("HBox");
         return hBox;
+    }
+
+    /*
+     * Creates a Button with a graphic, mainly used in the sidePanel
+     */
+    public Button imgButton(String imageName, String textKey, Node action) {
+        String imgPath = "/com/weaverstudios/images/" + imageName;
+        Button imgButton = new Button();
+
+        ImageView imageView = new ImageView(new Image(getClass().getResource(imgPath).toExternalForm()));
+        imageView.setFitWidth(40);
+        imageView.setFitHeight(40);
+
+        // Create a VBox to contain the img and the button's name
+        VBox vBox = new VBox(
+            imageView,
+            new Label(LanguageManager.getText(textKey))
+        );
+        vBox.setAlignment(Pos.CENTER);
+        
+        imgButton.setGraphic(vBox);
+
+        if (action != null) {
+            imgButton.setOnAction(e -> MainView.setMainContent(action));
+        } else System.out.println("Not a valid Node.");
+
+        return imgButton;
     }
 }
