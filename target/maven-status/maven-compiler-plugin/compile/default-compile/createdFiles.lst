@@ -8,7 +8,6 @@ com\weaverstudios\timeLine\logic\personType\Noble.class
 com\weaverstudios\timeLine\logic\personType\Slave.class
 com\weaverstudios\timeLine\logic\War.class
 com\weaverstudios\main\Main.class
-com\weaverstudios\timeLine\ui\timeLineMV.class
 com\weaverstudios\timeLine\logic\personType\Freedman.class
 module-info.class
 com\weaverstudios\timeLine\logic\Person.class
@@ -28,6 +27,7 @@ com\weaverstudios\utils\GlobalUtils.class
 com\weaverstudios\timeLine\logic\personType\MiddleClass.class
 com\weaverstudios\timeLine\logic\personType\Bourgeois.class
 com\weaverstudios\main\UIManager.class
+com\weaverstudios\timeLine\ui\TimeLineMV.class
 com\weaverstudios\main\Login.class
 com\weaverstudios\timeLine\logic\personType\LowerClass.class
 com\weaverstudios\dataBase\timeLineDB.class

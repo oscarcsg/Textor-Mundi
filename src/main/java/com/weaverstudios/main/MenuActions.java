@@ -8,6 +8,7 @@ import java.util.Optional;
 import com.weaverstudios.utils.GlobalUtils;
 
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputDialog;
@@ -30,7 +31,7 @@ public class MenuActions {
 
     // Instance of UIManager to manage UI updates
     private UIManager insUIMan = UIManager.getInstance();
-
+    //private MainView insMainView = MainView.getInstance();
 
 
     // =======================
@@ -67,9 +68,16 @@ public class MenuActions {
                 if (!newProjectFolder.exists()) {
                     if (newProjectFolder.mkdir()) {
                         System.out.println("Project folder created at: " + newProjectFolder.getAbsolutePath());
-
-                        // If the new project can be created, also charge it to the app
-                        ProjectManager.loadProjectFiles(newProjectFolder);
+                        ButtonType userChoice = GlobalUtils.confirmationDialog(
+                            "confirmationDialog.openProject.title",
+                            "confirmationDialog.openProject.message",
+                            "function.open",
+                            "function.cancel"
+                        );
+                        if (userChoice.getText().equals(LanguageManager.getText("function.open"))) {
+                            ProjectManager.setCurrentProjectFolder(newProjectFolder);
+                            setDefaultProject(newProjectFolder);
+                        }
                     } else {
                         // FAILED TO CREATE THE PROJECT FOLDER
                         System.out.println("Failed to create the project folder.");
@@ -92,6 +100,30 @@ public class MenuActions {
         }
     }
 
+    private static void setDefaultProject(File projectFolder) {
+        ButtonType userChoice = GlobalUtils.confirmationDialog(
+            "confirmationDialog.projectDefault.title",
+            "confirmationDialog.setProjectDefault.message",
+            "function.accept",
+            "function.cancel"
+        );
+        if (userChoice.getText().equals(LanguageManager.getText("function.accept"))) {
+            PreferencesManager.setDefaultProject(projectFolder);
+        }
+    }
+    private static void quitDefaultProject() {
+        ButtonType userChoice = GlobalUtils.confirmationDialog(
+            "confirmationDialog.projectDefault.title",
+            "confirmationDialog.quitProjectDefault.message",
+            "function.accept",
+            "function.cancel"
+        );
+        if (userChoice.getText().equals(LanguageManager.getText("function.accept"))) {
+            PreferencesManager.setDefaultProject(null);
+            System.out.println("Default project quit from preferences.");
+        }
+    }
+
     /*
      * Opens an existing project by allowing the user to select a project directory
      */
@@ -107,6 +139,7 @@ public class MenuActions {
         if (selectedFolder != null && selectedFolder.isDirectory()) {
             // Store the selected folder as the current project folder
             ProjectManager.setCurrentProjectFolder(selectedFolder);
+            setDefaultProject(selectedFolder);
 
             // Print the selected folder path for debugging purposes
             System.out.println("Selected project folder: " + ProjectManager.getCurrentProjectFolder().getAbsolutePath());
@@ -116,8 +149,10 @@ public class MenuActions {
         } else {
             // Notify the user that no valid folder was selected
             System.out.println("No valid folder selected");
-            GlobalUtils.showError(LanguageManager.getText("error.folderOppening.title"),
-                                  LanguageManager.getText("error.folderOppening"));
+            GlobalUtils.showError(
+                "error.folderOppening.title",
+                "error.folderOppening"
+            );
         }
     }
 
@@ -134,7 +169,9 @@ public class MenuActions {
     }
 
     public static void closeAction() {
-        
+        ProjectManager.setCurrentProjectFolder(null);
+        quitDefaultProject();
+        MainView.setDefaultMainView();
     }
 
 
@@ -206,9 +243,7 @@ public class MenuActions {
                     MainView.setLocale(Locale.of(LanguageManager.getSystemLang()));
                     // Update the language selected in Preferences
                     PreferencesManager.setLanguage(LanguageManager.getSystemLang());
-                } else {
-                    System.out.println("User has selected the current language.");
-                }
+                } else System.out.println("User has selected the current language.");
             } catch (Exception ex) {
                 System.out.println("An error occurred while changing the language.");
             }
@@ -221,9 +256,7 @@ public class MenuActions {
                     MainView.setLocale(Locale.of("es"));
                     // Update the language selected in Preferences
                     PreferencesManager.setLanguage("es");
-                } else {
-                    System.out.println("User has selected the current language.");
-                }
+                } else System.out.println("User has selected the current language.");
             } catch (Exception ex) {
                 System.out.println("An error occurred while changing the language.");
             }
@@ -236,14 +269,46 @@ public class MenuActions {
                     MainView.setLocale(Locale.of("en"));
                     // Update the language selected in Preferences
                     PreferencesManager.setLanguage("en");
-                } else {
-                    System.out.println("User has selected the current language.");
-                }
+                } else System.out.println("User has selected the current language.");
             } catch (Exception ex) {
                 System.out.println("An error occurred while changing the language.");
             }
         });
         languages.getItems().addAll(systemLang, spanish, english);
+
+        // ===== PROJECTS LANGUAGE ===== //
+        MenuButton projectsLanguage = GlobalUtils.menuButton("lang.projects.menu");
+        MenuItem sysProjectsLang = GlobalUtils.menuItem("lang.systemLang");
+        MenuItem spanishProjectsLang = GlobalUtils.menuItem("lang.es");
+        MenuItem englishProjectsLang = GlobalUtils.menuItem("lang.en");
+        sysProjectsLang.setOnAction(e -> {
+            try {
+                if (!PreferencesManager.getProjectsLang().equals(LanguageManager.getSystemLang())) {
+                    PreferencesManager.setProjectsLang(LanguageManager.getSystemLang());
+                } else System.out.println("User has selected the current projects language.");
+            } catch (Exception ex) {
+                System.out.println("An error occurred while changing the projects language.");
+            }
+        });
+        spanishProjectsLang.setOnAction(e -> {
+            try {
+                if (!PreferencesManager.getProjectsLang().equals("es")) {
+                    PreferencesManager.setProjectsLang("es");
+                } else System.out.println("User has selected the current projects language.");
+            } catch (Exception ex) {
+                System.out.println("An error occurred while changing the projects language.");
+            }
+        });
+        englishProjectsLang.setOnAction(e -> {
+            try {
+                if (!PreferencesManager.getProjectsLang().equals("en")) {
+                    PreferencesManager.setProjectsLang("en");
+                } else System.out.println("User has selected the current projects language.");
+            } catch (Exception ex) {
+                System.out.println("An error occurred while changing the projects language.");
+            }
+        });
+        projectsLanguage.getItems().addAll(sysProjectsLang, spanishProjectsLang, englishProjectsLang);
 
         // ===== THEME SWITCHING ===== //
         MenuButton themeSwitch = GlobalUtils.menuButton("theme.switch");
@@ -256,9 +321,7 @@ public class MenuActions {
                     PreferencesManager.setTheme("darkTheme");
                     // Then, call the method updateStyles() using the scene and the current theme
                     insUIMan.updateStyles(MainView.getScene());
-                } else {
-                    System.out.println("User has selected the current theme.");
-                }
+                } else System.out.println("User has selected the current theme.");
             } catch (Exception ex) {
                 System.out.println("An error occurred while changing the theme.");
             }
@@ -270,9 +333,7 @@ public class MenuActions {
                     PreferencesManager.setTheme("lightTheme");
                     // Then, call the method updateStyles() using the scene and the current theme
                     insUIMan.updateStyles(MainView.getScene());
-                } else {
-                    System.out.println("User has selected the current theme.");
-                }
+                } else System.out.println("User has selected the current theme.");
             } catch (Exception ex) {
                 System.out.println("An error occurred while changing the theme.");
             }
@@ -285,6 +346,7 @@ public class MenuActions {
 
         settingsPanel.getChildren().addAll(
             languages,
+            projectsLanguage,
             themeSwitch,
             closeSettings
         );

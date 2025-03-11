@@ -1,0 +1,2 @@
+JAVA_VERSION="21.0.6"
+MODULES="java.base java.xml java.prefs java.logging java.transaction.xa java.sql java.datatransfer java.desktop javafx.base jdk.unsupported javafx.graphics javafx.controls com.weaverstudios.main"

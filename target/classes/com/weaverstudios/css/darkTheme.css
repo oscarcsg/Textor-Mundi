@@ -237,17 +237,17 @@ Label {
     -fx-border-color: #2a2a2a;
 }
 
-.menuItem {
+.menu-item {
     -fx-background-color: transparent;
     -fx-padding: 8 16;
     -fx-background-radius: 4;
 }
 
-.menuItem:hover {
+.menu-item:hover {
     -fx-background-color: #555555;
 }
 
-.menuItem .label {
+.menu-item .label {
     -fx-text-fill: white;
     -fx-font-weight: normal;
 }
@@ -263,16 +263,28 @@ Label {
 
 /* ======= TABS ======= */
 .tab-pane {
-    -fx-tab-min-width: 100px;
+    -fx-tab-min-width: 80px;
+    -fx-tab-max-height: 24px;
+    -fx-background-color: transparent;
 }
 
 .tab-pane .tab-header-area {
     -fx-background-color: #2a2a2a;
+    -fx-padding: 2 2 0 2;
+}
+
+.tab-pane .tab-header-background {
+    -fx-background-color: #2a2a2a;
+    -fx-border-color: -border-color;
+    -fx-border-width: 0 0 1 0;
 }
 
 .tab {
     -fx-background-color: #3b3b3b;
-    -fx-padding: 8 16;
+    -fx-background-radius: 4 4 0 0;
+    -fx-padding: 4 10;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
 }
 
 .tab:selected {
@@ -282,11 +294,68 @@ Label {
 .tab .tab-label {
     -fx-text-fill: -text-secondary;
     -fx-font-weight: normal;
+    -fx-font-size: 12px;
 }
 
 .tab:selected .tab-label {
     -fx-text-fill: white;
     -fx-font-weight: bold;
+}
+
+.tab:hover {
+    -fx-background-color: #555555;
+}
+
+.tab:hover .tab-label {
+    -fx-text-fill: white;
+}
+
+.tab:selected:hover {
+    -fx-background-color: -primary-color;
+}
+
+.tab:selected:hover .tab-label {
+    -fx-text-fill: white;
+}
+
+.tab-pane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator {
+    -fx-border-color: transparent;
+}
+
+/* Estilo para el botón de cierre de la pestaña */
+.tab .tab-close-button {
+    -fx-background-color: -text-secondary;
+    -fx-shape: "M 0,0 H1 L 4,3 7,0 H8 V1 L 5,4 8,7 V8 H7 L 4,5 1,8 H0 V7 L 3,4 0,1 Z";
+    -fx-scale-x: 0.8;
+    -fx-scale-y: 0.8;
+}
+
+.tab .tab-close-button:hover {
+    -fx-background-color: -error-color;
+}
+
+/* Estilo para las flechas de desplazamiento */
+.tab-pane > .tab-header-area > .control-buttons-tab > .container > .tab-down-button {
+    -fx-background-color: -text-secondary;
+    -fx-padding: 3;
+}
+
+.tab-pane > .tab-header-area > .control-buttons-tab > .container > .tab-down-button:hover {
+    -fx-background-color: -primary-light;
+}
+
+/* Estilo para el contenido de la pestaña */
+.tab-pane > .tab-content-area {
+    -fx-background-color: -surface-color;
+    -fx-border-color: -border-color;
+    -fx-border-width: 1;
+    -fx-border-radius: 0 0 4 4;
+    -fx-padding: 6;
+}
+
+/* Estilo personalizado para TabPane */
+.custom-tab-pane {
+    -fx-effect: -shadow-1;
 }
 
 /* ======= TABLE VIEW ======= */

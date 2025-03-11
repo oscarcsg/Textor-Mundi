@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
  * and loading appropriate resource bundles for translations
  */
 public class LanguageManager {
+    private static Locale[] languagesAvailable = {Locale.of("es"), Locale.of("en")};
     // Stores the system's default language
     private static final String systemLang = Locale.getDefault().getLanguage();
     // ResourceBundle to hold the loaded language properties
@@ -58,6 +59,12 @@ public class LanguageManager {
         return resourceBundle.getString(key);
     }
 
+    // And using the preferred language for projects creation
+    public static String getProjectsCreationText(String key) {
+        ResourceBundle resourceBundle2 = ResourceBundle.getBundle("com.weaverstudios.languages.messages", Locale.of(PreferencesManager.getProjectsLang()));
+        return resourceBundle2.getString(key);
+    }
+
 
     // =====================================================================
     //    Finds the key associated with a given text in a specific locale
@@ -75,6 +82,19 @@ public class LanguageManager {
         }
         return null;
     }
+    // Finds the key using all LanguagesAvailable
+    public static String getKeyFromUnknown(String text) {
+        for (Locale locale : getLanguagesAvailable()) {
+            ResourceBundle bundle = ResourceBundle.getBundle("com.weaverstudios.languages.messages", locale);
+            
+            for (String key : bundle.keySet()) {
+                if (bundle.getString(key).equals(text)) {
+                    return key;
+                }
+            }
+        }
+        return null;
+    }
 
     // ===============================================================
     //    Returns the current locale being used by the application
@@ -88,5 +108,12 @@ public class LanguageManager {
     // =======================================================
     public static String getSystemLang() {
         return systemLang;
+    }
+
+    // ==============================
+    //   Returns the Locale array
+    // ==============================
+    public static Locale[] getLanguagesAvailable() {
+        return languagesAvailable;
     }
 }

@@ -86,6 +86,10 @@ public class MainView {
         this.primaryStage = primaryStage;
     }
 
+    public static void setDefaultMainView(){
+        mainContent.setCenter(defContent());
+    }
+
     // Returns the app's primary stage
     public Stage getStage(){
         return primaryStage;
@@ -139,9 +143,10 @@ public class MainView {
 
         subAppSelectionPanel.getChildren().addAll(
             insGloUt.imgButton(
-                "prueba.png",
+                true,
+                "Cronos.png",
                 "sidePanel.button.timeLine",
-                TimeLineMV.timeLineMainView()
+                () -> TimeLineMV.timeLineMainView()
             )
         );
 
@@ -265,7 +270,7 @@ public class MainView {
     // =========================================
     //    Default content of the mainContent
     // =========================================
-    private VBox defContent() {
+    private static VBox defContent() {
         // Create the main container (VBox) to hold all elements
         VBox defContent = new VBox();
         defContent.setAlignment(Pos.TOP_CENTER); // Align content at the top center

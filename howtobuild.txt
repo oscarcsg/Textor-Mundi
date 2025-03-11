@@ -1,0 +1,11 @@
+1. Clean and compile the project
+    mvn clean package
+
+2. Create an image runtime optimized with jlink
+    mvn javafx:jlink
+
+3. Create the installer with jpackage
+    mvn jpackage:jpackage
+
+NOTE: if you want to change the parameters of the .exe like the name or the version (among others), change them in the
+        'jpackage-maven-plugin' in pom.xml
