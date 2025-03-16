@@ -4,7 +4,6 @@ package com.weaverstudios.utils;
 import java.io.File;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 import com.weaverstudios.main.LanguageManager;
 import com.weaverstudios.main.MainView;
@@ -25,7 +24,6 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 /*
@@ -149,27 +147,9 @@ public class GlobalUtils {
     }
 
     /*
-     * Creates a VBox (Vertical Box) container with a predefined style
-     */
-    public static VBox vBox() {
-        VBox vBox = new VBox();
-        vBox.getStyleClass().add("VBox");
-        return vBox;
-    }
-
-    /*
-     * Creates an HBox (Horizontal Box) container with a predefined style
-     */
-    public static HBox hBox() {
-        HBox hBox = new HBox();
-        hBox.getStyleClass().add("HBox");
-        return hBox;
-    }
-
-    /*
      * Creates a Button with a graphic, mainly used in the sidePanel
      */
-    public Button imgButton(boolean folderCreator, String imageName, String textKey, Supplier<Node> action) {
+    public Button imgButton(boolean folderCreator, String imageName, String textKey, Runnable action) {
         String imgPath = "/com/weaverstudios/images/" + imageName;
         Button imgButton = new Button();
 
@@ -191,12 +171,16 @@ public class GlobalUtils {
                 if (action != null) {
                     ProjectManager.createSubFolder(LanguageManager.getProjectsCreationText(textKey));
                     if (ProjectManager.getFlag()) {
-                        MainView.setMainContent(action.get());
+                        action.run();
                     }
                 } else System.out.println("Not a valid action");
             });
         } else {
-            imgButton.setOnAction(null);
+            imgButton.setOnAction(e -> {
+                if (action != null) {
+                    action.run();
+                }
+            });
         }
 
         return imgButton;
@@ -215,9 +199,21 @@ public class GlobalUtils {
             tabPane.getTabs().add(tab);
         }
 
-        Tab tab = new Tab();
-        tab.setClosable(false);
-        tab.setStyle("-fx-max-width: 1px;");
+        Tab addTab = new Tab("+");
+        addTab.setClosable(false);
+        addTab.getStyleClass().add("add-tab");
+        addTab.setStyle("-fx-tab-min-width: 30px; -fx-tab-max-width: 30px; -fx-tab-min-height: 30px; -fx-tab-max-height: 30px;"); // Ensure square size
+
+        // Add functionality to add new tabs
+        /*addTab.setOnSelectionChanged(event -> {
+            if (addTab.isSelected()) {
+                Tab newTab = new Tab("New Tab");
+                tabPane.getTabs().add(tabPane.getTabs().size() - 1, newTab);
+                tabPane.getSelectionModel().select(newTab);
+            }
+        });*/
+
+        tabPane.getTabs().add(addTab);
 
         return tabPane;
     }

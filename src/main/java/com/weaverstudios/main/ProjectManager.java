@@ -1,12 +1,12 @@
 // com/weaverstudios/main/ProjectManager.java
 package com.weaverstudios.main;
 
+import com.weaverstudios.utils.GlobalUtils;
+
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-
-import com.weaverstudios.utils.GlobalUtils;
 
 /*
  * Class to manage project files and the current project folder

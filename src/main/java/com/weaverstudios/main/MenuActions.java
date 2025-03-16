@@ -1,11 +1,11 @@
 // com/weaverstudios/main/MenuActions.java
 package com.weaverstudios.main;
 
+import com.weaverstudios.utils.GlobalUtils;
+
 import java.io.File;
 import java.util.Locale;
 import java.util.Optional;
-
-import com.weaverstudios.utils.GlobalUtils;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;

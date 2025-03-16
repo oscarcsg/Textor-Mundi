@@ -1,10 +1,10 @@
 // com/weaverstudios/main/MainView.java
 package com.weaverstudios.main;
 
-import java.util.Locale;
-
 import com.weaverstudios.timeLine.ui.TimeLineMV;
 import com.weaverstudios.utils.GlobalUtils;
+
+import java.util.Locale;
 
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
@@ -137,8 +137,10 @@ public class MainView {
     //      Sub App Selection Side Panel
     // =======================================
     private GlobalUtils insGloUt = GlobalUtils.getInstance();
+    private TimeLineMV insTimeLine = TimeLineMV.getInstance();
     private VBox createSubAppSelectionPanel() {
         VBox subAppSelectionPanel = new VBox();
+        subAppSelectionPanel.setAlignment(Pos.TOP_CENTER);
         subAppSelectionPanel.getStyleClass().add("sidePanel");
 
         subAppSelectionPanel.getChildren().addAll(
@@ -146,7 +148,7 @@ public class MainView {
                 true,
                 "Cronos.png",
                 "sidePanel.button.timeLine",
-                () -> TimeLineMV.timeLineMainView()
+                () -> setMainContent(insTimeLine.timeLineMainView())
             )
         );
 

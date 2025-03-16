@@ -358,6 +358,45 @@ Label {
     -fx-effect: -shadow-1;
 }
 
+/* Style for the 'addTab' */
+.add-tab {
+    -fx-tab-min-width: 30px;
+    -fx-tab-max-width: 30px;
+    -fx-tab-min-height: 30px; /* Ensure square size */
+    -fx-tab-max-height: 30px; /* Ensure square size */
+    -fx-background-color: -surface-color;
+    -fx-background-radius: 4 4 0 0;
+    -fx-padding: 0; /* Remove padding to ensure exact size */
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.add-tab:selected {
+    -fx-background-color: -primary-light;
+}
+
+.add-tab .tab-label {
+    -fx-text-fill: -text-primary;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+}
+
+.add-tab:hover {
+    -fx-background-color: derive(-primary-light, 30%);
+}
+
+.add-tab:hover .tab-label {
+    -fx-text-fill: -text-primary;
+}
+
+.add-tab:selected:hover {
+    -fx-background-color: -primary-light;
+}
+
+.add-tab:selected:hover .tab-label {
+    -fx-text-fill: white;
+}
+
 /* ======= TABLE VIEW ======= */
 .table-view {
     -fx-background-color: -background-color;
