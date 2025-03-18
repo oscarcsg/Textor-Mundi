@@ -9,7 +9,9 @@ import com.weaverstudios.main.LanguageManager;
 import com.weaverstudios.main.MainView;
 import com.weaverstudios.main.ProjectManager;
 
+import javafx.animation.RotateTransition;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -24,7 +26,11 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.SVGPath;
+import javafx.util.Duration;
 
 /*
  * Utility class providing global UI components and methods for common tasks.
@@ -189,8 +195,13 @@ public class GlobalUtils {
     /*
      * Creates the tabPane with just horizontal scroll
      */
-    public static TabPane tabPane(File folderPath) {
+    public static HBox tabPane(File folderPath) {
+        HBox tabPanePanel = new HBox();
         TabPane tabPane = new TabPane();
+
+        // Ensure the TabPane has a minimum size
+        tabPane.setMinWidth(200);
+        tabPane.setMinHeight(40);
 
         File[] folder = folderPath.listFiles();
 
@@ -199,22 +210,30 @@ public class GlobalUtils {
             tabPane.getTabs().add(tab);
         }
 
-        Tab addTab = new Tab("+");
-        addTab.setClosable(false);
-        addTab.getStyleClass().add("add-tab");
-        addTab.setStyle("-fx-tab-min-width: 30px; -fx-tab-max-width: 30px; -fx-tab-min-height: 30px; -fx-tab-max-height: 30px;"); // Ensure square size
+        SVGPath reloadIconPath1 = new SVGPath();
+        reloadIconPath1.setContent("M12,2a10.032,10.032,0,0,1,7.122,3H16a1,1,0,0,0-1,1h0a1,1,0,0,0,1,1h4.143A1.858,1.858,0,0,0,22,5.143V1a1,1,0,0,0-1-1h0a1,1,0,0,0-1,1V3.078A11.981,11.981,0,0,0,.05,10.9a1.007,1.007,0,0,0,1,1.1h0a.982.982,0,0,0,.989-.878A10.014,10.014,0,0,1,12,2Z");
+        SVGPath reloadIconPath2 = new SVGPath();
+        reloadIconPath2.setContent("M22.951,12a.982.982,0,0,0-.989.878A9.986,9.986,0,0,1,4.878,19H8a1,1,0,0,0,1-1H9a1,1,0,0,0-1-1H3.857A1.856,1.856,0,0,0,2,18.857V23a1,1,0,0,0,1,1H3a1,1,0,0,0,1-1V20.922A11.981,11.981,0,0,0,23.95,13.1a1.007,1.007,0,0,0-1-1.1Z");
 
-        // Add functionality to add new tabs
-        /*addTab.setOnSelectionChanged(event -> {
-            if (addTab.isSelected()) {
-                Tab newTab = new Tab("New Tab");
-                tabPane.getTabs().add(tabPane.getTabs().size() - 1, newTab);
-                tabPane.getSelectionModel().select(newTab);
-            }
-        });*/
+        Group reloadIcon2 = new Group(reloadIconPath1, reloadIconPath2);
 
-        tabPane.getTabs().add(addTab);
+        Button reload = new Button();
+        reload.setId("reload-button");
+        reload.setGraphic(reloadIcon2); // Use StackPane as the graphic
 
-        return tabPane;
+        // Ensure the reload button has a fixed size
+        reload.setPrefWidth(40);
+        reload.setPrefHeight(40);
+
+        // Add RotateTransition for the text
+        RotateTransition rotateTransition = new RotateTransition(Duration.seconds(1), reloadIcon2);
+        rotateTransition.setByAngle(360);
+
+        reload.setOnMouseEntered(e -> rotateTransition.playFromStart());
+
+        HBox.setHgrow(tabPane, Priority.ALWAYS);
+        tabPanePanel.getChildren().addAll(tabPane, reload);
+
+        return tabPanePanel;
     }
 }

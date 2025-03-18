@@ -166,6 +166,31 @@ Label {
     -fx-background-color: -error-dark;
 }
 
+/* Reload Button (used in TabPanes) */
+#reload-button {
+    -fx-background-color: #e0e0e0;
+    -fx-text-fill: -text-primary;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-padding: 0; /* Ensure no extra padding */
+    -fx-font-size: 24px; /* Font size for the reload text */
+    -fx-font-weight: bold;
+    -fx-border-width: 1px;
+    -fx-border-color: #a0a0a0;
+    -fx-effect: -shadow-1;
+    -fx-pref-width: 40px; /* Fixed width */
+    -fx-pref-height: 40px; /* Fixed height */
+    -fx-alignment: center; /* Ensure content is centered */
+    -fx-content-display: center; /* Align graphic and text */
+}
+
+#reload-button:hover {
+    -fx-background-color: #d0d0d0;
+    -fx-border-color: #808080;
+    -fx-effect: -shadow-2;
+    -fx-cursor: hand;
+}
+
 /* ======= TEXT FIELDS ======= */
 .text-field {
     -fx-background-color: -background-color;
@@ -266,6 +291,8 @@ Label {
     -fx-tab-min-width: 80px;
     -fx-tab-max-height: 24px;
     -fx-background-color: transparent;
+    -fx-min-width: 200px; /* Ensure a minimum width */
+    -fx-min-height: 40px; /* Ensure a minimum height */
 }
 
 .tab-pane .tab-header-area {
